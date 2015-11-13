@@ -1,0 +1,160 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 15, 2015, 10:53:48 AM
+    Author     : ylopez
+*/
+
+.col-color {
+	background-color: #fffcf8
+}
+
+.col-container {
+	background-color: #fffcf8;
+}
+
+.col-center {
+	padding: 0 5px;
+}
+
+.col-post {
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.col-row {
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-bottom: 20px;
+}
+
+.user_profile_menu .options {
+	margin-top: 10px;
+	margin-bottom:  10px;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.corners {
+	border-radius: 25px;
+}
+
+.login-register {
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.register {
+	border-radius: 25px;
+	padding-bottom: 20px;
+	margin-top: 20px;
+}
+
+input, select {
+	margin-left: 5px;
+}
+
+.login-register input[type="text"], .login-register input[type="email"], .login-register input[type="password"] {
+	width: 70%;
+}
+
+.register input[type="text"], .register input[type="email"], .register input[type="password"] {
+	width: 45%;
+}
+
+.register input[name^="data[UserPhone]"][name$="[number]"] {
+	/*width: 20%;*/
+}
+
+input[type="submit"] {
+	background: #3498db;
+	background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+	background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+	background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+	background-image: -o-linear-gradient(top, #3498db, #2980b9);
+	background-image: linear-gradient(to bottom, #3498db, #2980b9);
+	-webkit-border-radius: 28;
+	-moz-border-radius: 28;
+	border-radius: 28px;
+	color: #ffffff;
+	padding: 5px 15px 5px 15px;
+	text-decoration: none;
+}
+
+input[type="submit"]:hover {
+	background: #3cb0fd;
+	background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+	background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+	background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+	background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+	background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+	text-decoration: none;
+}
+
+.submit {
+	margin-top: 10px;
+}
+
+form .input {
+    padding: 0 0 10px 0;
+}
+
+.new_item_img, .new_phone_img {
+	width: 30px;
+	cursor: pointer;
+}
+
+.welcome h1 {
+	text-align: center;
+}
+
+.welcome-text {
+	text-align: justify;
+}
+
+.header {
+	padding: 15px 0px;
+	font-size: 20px;
+}
+
+input[type="text"], input[type="email"] {
+	width: 250px;
+}
+
+.dropzone {
+	text-align: center;
+}
+
+.error_flash {
+	margin-top: 3px;
+	color: #D8000C;
+	background-color: #FFBABA;
+	border: 1px solid;
+	text-align: center;
+	padding: 15px 10px 15px 50px;
+	background-image: url('images/error.png');
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+.success_flash {
+	margin-top: 3px;
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	border: 1px solid;
+	text-align: center;
+	padding: 15px 10px 15px 50px;
+	background-image: url('images/success.png');
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
