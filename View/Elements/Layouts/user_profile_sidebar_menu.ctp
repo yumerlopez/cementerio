@@ -11,6 +11,11 @@
 		</a>
 	</div>
 	<div class="col-xs-2 col-sm-2 col-md-12 options">
+		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'user_beloved_ones', 'action' => 'user_index', $user['id'])); ?>">
+			<img src="<?php echo $this->webroot . 'img/user_profile/beloved_one.png'?>" width="70px" height="70px" alt="<?php echo __('Your Beloved Ones')?>" title="<?php echo __('Your Beloved Ones')?>"/>
+		</a>
+	</div>
+	<div class="col-xs-2 col-sm-2 col-md-12 options">
 		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'add')); ?>">
 			<img src="<?php echo $this->webroot . 'img/user_profile/setting.png'?>" width="70px" height="70px" alt="<?php echo __('Add User Test')?>" title="<?php echo __('Add User Test')?>"/>
 		</a>

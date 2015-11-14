@@ -18,7 +18,7 @@ class UsersController extends AppController {
 	public $components = array('Paginator', 'Session');
 	
 	private $__unAuthorizedActions = array();
-	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout');
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture');
 
 
 	public function isAuthorized($user) {
