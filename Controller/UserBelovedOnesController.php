@@ -84,7 +84,7 @@ class UserBelovedOnesController extends AppController {
 				$this->Session->setFlash(__('The user beloved one has been saved.'), 'default', array('class' => 'success_flash'));
 				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			} else {
-				$this->Flash->error(__('The user beloved one could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The user beloved one could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		}
 		$users = $this->UserBelovedOne->User->find('list');
@@ -105,10 +105,10 @@ class UserBelovedOnesController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->UserBelovedOne->save($this->request->data)) {
-				$this->Flash->success(__('The user beloved one has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The user beloved one has been saved.'), 'default', array('class' => 'success_flash'));
+				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			} else {
-				$this->Flash->error(__('The user beloved one could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('The user beloved one could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		} else {
 			$options = array('conditions' => array('UserBelovedOne.' . $this->UserBelovedOne->primaryKey => $id));

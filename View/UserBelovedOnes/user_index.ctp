@@ -3,8 +3,8 @@
 		<div class="col-xs-9 col-sm-9 col-md-9">
 			<h1><?php echo __('Your Beloved Ones'); ?></h1>
 		</div>
-		<div class="col-xs-3 col-sm-3 col-md-3 ajax">
-			<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('action' => 'add')); ?>">
+		<div class="col-xs-3 col-sm-3 col-md-3">
+			<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'add')); ?>">
 				<?php echo __('Add a Beloved One'); ?>
 			</a>
 		</div>
@@ -32,9 +32,15 @@
 							<td><?php echo h($userBelovedOne['UserBelovedOneRelationship']['name']); ?>&nbsp;</td>
 							<td class="actions">
 								<?php echo $this->Html->link(__('View'), array('action' => 'view', $userBelovedOne['UserBelovedOne']['id'])); ?>
-								<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
+								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>">
+									<?php echo __('Edit'); ?>
+								</a>
+								<?php // echo $this->Html->link(__('Edit'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
 								<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $userBelovedOne['UserBelovedOne']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $userBelovedOne['UserBelovedOne']['id']))); ?>
-								<?php echo $this->Html->link(__('Events'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
+								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('controller' => 'events', 'action' => 'user_beloved_one_index', $userBelovedOne['UserBelovedOne']['id'])); ?>">
+									<?php echo __('Events'); ?>
+								</a>
+								<?php // echo $this->Html->link(__('Events'), array('controller' => 'events', 'action' => 'user_beloved_one_index', $userBelovedOne['UserBelovedOne']['id'])); ?>
 								<?php echo $this->Html->link(__('Photos'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
 								<?php echo $this->Html->link(__('Videos'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
 							</td>
@@ -45,7 +51,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$('.ajax a').click(function(){
+		$('.ajax').click(function(){
 			var actionto = $(this).attr('actionto');
 			$.ajax({
 				url:actionto,
