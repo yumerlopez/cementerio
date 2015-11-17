@@ -14,6 +14,7 @@ class UserBelovedOnesController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
+	public $uses = array('UserBelovedOne', 'User', 'MultimediaCollectionType', 'MultimediaCollection');
 	
 	private $__unAuthorizedActions = array();
 	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'user_index');
@@ -48,7 +49,7 @@ class UserBelovedOnesController extends AppController {
 	}
 	
 	public function user_index($user_id = null) {
-		if (!$this->UserBelovedOne->User->exists($user_id)) {
+		if (!$this->User->exists($user_id)) {
 			throw new NotFoundException(__('Invalid user'));
 		}
 		$this->UserBelovedOne->recursive = 0;
@@ -79,12 +80,35 @@ class UserBelovedOnesController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-			$this->UserBelovedOne->create();
-			if ($this->UserBelovedOne->save($this->request->data)) {
-				$this->Session->setFlash(__('The user beloved one has been saved.'), 'default', array('class' => 'success_flash'));
-				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
-			} else {
-				$this->Session->setFlash(__('The user beloved one could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+			$dataSource = $this->User->getDataSource();
+			$dataSource->begin();
+			try {
+				$this->UserBelovedOne->create();
+				if ($this->UserBelovedOne->save($this->request->data)) {
+					$multimedia_collection_type_photo_id = $this->MultimediaCollectionType->find('first', array('conditions' => array('MultimediaCollectionType.name' => 'Photo Album')));
+					$multimedia_collection_type_video_id = $this->MultimediaCollectionType->find('first', array('conditions' => array('MultimediaCollectionType.name' => 'Video Collection')));
+					
+					$this->request->data['MultimediaCollection'][0]['name'] = 'General Photo Album';
+					$this->request->data['MultimediaCollection'][0]['description'] = 'General Photo Album';
+					$this->request->data['MultimediaCollection'][0]['multimedia_collection_type_id'] = $multimedia_collection_type_photo_id['MultimediaCollectionType']['id'];
+					$this->request->data['MultimediaCollection'][0]['user_beloved_one_id'] = $this->UserBelovedOne->id;
+					
+					$this->request->data['MultimediaCollection'][1]['name'] = 'General Video Collection';
+					$this->request->data['MultimediaCollection'][1]['description'] = 'General Video Collection';
+					$this->request->data['MultimediaCollection'][1]['multimedia_collection_type_id'] = $multimedia_collection_type_video_id['MultimediaCollectionType']['id'];
+					$this->request->data['MultimediaCollection'][1]['user_beloved_one_id'] = $this->UserBelovedOne->id;
+					
+					if ($this->MultimediaCollection->saveMany($this->request->data['MultimediaCollection'])) {
+						$dataSource->commit();
+						$this->Session->setFlash(__('The user beloved one has been saved.'), 'default', array('class' => 'success_flash'));
+						return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+					}
+				} else {
+					$dataSource->rollback();
+					$this->Session->setFlash(__('The user beloved one could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				}
+			} catch (Exception $exc) {
+				echo $exc->getTraceAsString();
 			}
 		}
 		$users = $this->UserBelovedOne->User->find('list');

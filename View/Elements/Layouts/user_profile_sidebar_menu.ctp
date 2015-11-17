@@ -48,7 +48,8 @@
 			url:actionto,
 			type:"GET",
 			success: function(data) {
-			  $('#content').html($(data).find('#content_info'));
+			  var content_info = $(data).find('#content_info');
+			  $('#content').html(content_info);
 			  document.addEventListener("DOMContentLoaded", function() {
 				var elements = document.getElementsByTagName("INPUT");
 				for (var i = 0; i < elements.length; i++) {

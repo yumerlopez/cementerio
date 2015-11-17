@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Multimedia Model
  *
  * @property MultimediaType $MultimediaType
+ * @property MultimediaCollection $MultimediaCollection
  */
 class Multimedia extends AppModel {
 
@@ -19,6 +20,13 @@ class Multimedia extends AppModel {
 		'MultimediaType' => array(
 			'className' => 'MultimediaType',
 			'foreignKey' => 'multimedia_type_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'MultimediaCollection' => array(
+			'className' => 'MultimediaCollection',
+			'foreignKey' => 'multimedia_collection_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

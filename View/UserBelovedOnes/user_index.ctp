@@ -1,4 +1,4 @@
-<div class="col-color" id="content_info">
+	<div class="col-color" id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-9 col-sm-9 col-md-9">
 			<h1><?php echo __('Your Beloved Ones'); ?></h1>
@@ -35,14 +35,16 @@
 								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>">
 									<?php echo __('Edit'); ?>
 								</a>
-								<?php // echo $this->Html->link(__('Edit'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
 								<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $userBelovedOne['UserBelovedOne']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $userBelovedOne['UserBelovedOne']['id']))); ?>
 								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('controller' => 'events', 'action' => 'user_beloved_one_index', $userBelovedOne['UserBelovedOne']['id'])); ?>">
 									<?php echo __('Events'); ?>
 								</a>
-								<?php // echo $this->Html->link(__('Events'), array('controller' => 'events', 'action' => 'user_beloved_one_index', $userBelovedOne['UserBelovedOne']['id'])); ?>
-								<?php echo $this->Html->link(__('Photos'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
-								<?php echo $this->Html->link(__('Videos'), array('action' => 'edit', $userBelovedOne['UserBelovedOne']['id'])); ?>
+								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('controller' => 'multimedia_collections', 'action' => 'user_beloved_one_index', 'photo', $userBelovedOne['UserBelovedOne']['id'])); ?>">
+									<?php echo __('Photos'); ?>
+								</a>
+								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('controller' => 'multimedia_collections', 'action' => 'user_beloved_one_index', 'video', $userBelovedOne['UserBelovedOne']['id'])); ?>">
+									<?php echo __('Videos'); ?>
+								</a>
 							</td>
 						</tr>
 					<?php endforeach; ?>

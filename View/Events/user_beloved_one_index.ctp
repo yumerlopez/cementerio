@@ -1,10 +1,10 @@
 <div class="col-color" id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-9 col-sm-9 col-md-9">
-			<h1><?php echo __('Events related to ') . $user_beloved_one['UserBelovedOne']['name'] . ' ' . $user_beloved_one['UserBelovedOne']['last_name']; ?></h1>
+			<h1><?php echo __('Events related to your ') . strtolower($user_beloved_one['UserBelovedOneRelationship']['name']) . " " . $user_beloved_one['UserBelovedOne']['name'] . ' ' . $user_beloved_one['UserBelovedOne']['last_name']; ?></h1>
 		</div>
 		<div class="col-xs-3 col-sm-3 col-md-3">
-			<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'add')); ?>">
+			<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'add', $user_beloved_one['UserBelovedOne']['id'])); ?>">
 				<?php echo __('Add a event'); ?>
 			</a>
 		</div>

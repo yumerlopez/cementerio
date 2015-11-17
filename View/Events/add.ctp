@@ -2,15 +2,13 @@
 <div class="col-color" id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
-			<h1><?php echo __('Add event'); ?></h1>
+			<h1><?php echo __('Add event for your ') . strtolower($userBelovedOne['UserBelovedOneRelationship']['name']) . " " . $userBelovedOne['UserBelovedOne']['full_name']; ?></h1>
 		</div>
 		<div class="events form">
 			<?php echo $this->Form->create('Event'); ?>
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6">
-						<?php echo $this->Form->input('user_beloved_one_id', array('label' => __('Beloved One*: '), 'required' => false)); ?>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6">
+					<?php echo $this->Form->hidden('user_beloved_one_id', array('value' => $userBelovedOne['UserBelovedOne']['id'])); ?>
+					<div class="col-xs-12 col-sm-12 col-md-12">
 						<?php echo $this->Form->input('name', array('label' => __('Name*: '), 'required' => false)); ?>
 					</div>
 				</div>

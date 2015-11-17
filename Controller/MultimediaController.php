@@ -14,6 +14,28 @@ class MultimediaController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
+	
+	private $__unAuthorizedActions = array();
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view');
+
+
+	public function isAuthorized($user) {
+		if (in_array($this->request->params['action'], $this->__unAuthorizedActions)) {
+			return false;
+		}
+		
+		if (in_array($this->request->params['action'], $this->__adminActions) && !parent::isAuthorized($user)) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	function  beforeFilter() {
+		parent::beforeFilter();
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view');
+	}
 
 /**
  * index method
@@ -45,7 +67,7 @@ class MultimediaController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($multimedia_type, $user_beloved_one_id = null) {
 		if ($this->request->is('post')) {
 			$this->Multimedia->create();
 			if ($this->Multimedia->save($this->request->data)) {
@@ -55,8 +77,24 @@ class MultimediaController extends AppController {
 				$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
 			}
 		}
-		$multimediaTypes = $this->Multimedia->MultimediaType->find('list');
-		$this->set(compact('multimediaTypes'));
+		$this->set('multimedia_type', $multimedia_type);
+		if ($multimedia_type === 'photo') {
+			$multimedia_type = 'Photo';
+			$multimedia_collection_type = 'Photo Album';
+			$multimedia_collection = 'General Photo Album';
+		}
+		if ($multimedia_type === 'video') {
+			$multimedia_type = 'Video';
+			$multimedia_collection_type = 'Video Collection';
+			$multimedia_collection = 'General Video Collection';
+		}
+		$userBelovedOne = $this->Multimedia->MultimediaCollection->UserBelovedOne->find('first', array('conditions' => array('UserBelovedOne.id' => $user_beloved_one_id)));
+		$multimediaType = $this->Multimedia->MultimediaType->find('first', array('conditions' => array('MultimediaType.name' => $multimedia_type)));
+		$multimediaCollection = $this->Multimedia->MultimediaCollection->find('first', array('recursive' => 1,
+																							 'conditions' => array('MultimediaCollection.user_beloved_one_id' => $user_beloved_one_id,
+																												   'MultimediaCollectionType.name' => $multimedia_collection_type,
+																												   'MultimediaCollection.name' => $multimedia_collection)));
+		$this->set(compact('multimediaType', 'multimediaCollection', 'userBelovedOne'));
 	}
 
 /**
@@ -82,7 +120,8 @@ class MultimediaController extends AppController {
 			$this->request->data = $this->Multimedia->find('first', $options);
 		}
 		$multimediaTypes = $this->Multimedia->MultimediaType->find('list');
-		$this->set(compact('multimediaTypes'));
+		$multimediaCollections = $this->Multimedia->MultimediaCollection->find('list');
+		$this->set(compact('multimediaTypes', 'multimediaCollections'));
 	}
 
 /**

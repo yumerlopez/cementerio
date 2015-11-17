@@ -79,7 +79,10 @@ class EventsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($user_beloved_one_id = null) {
+		if (!$this->Event->UserBelovedOne->exists($user_beloved_one_id)) {
+			throw new NotFoundException(__('Invalid user beloved one'));
+		}
 		if ($this->request->is('post')) {
 			$this->Event->create();
 			if ($this->Event->save($this->request->data)) {
@@ -89,13 +92,11 @@ class EventsController extends AppController {
 				$this->Session->setFlash(__('The event could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		}
-		$userBelovedOnesArray = $this->Event->UserBelovedOne->find('all', array('recursive' => 0,
-																			'fields' => array('UserBelovedOne.id', 'UserBelovedOne.full_name', 'UserBelovedOneRelationship.name')));
-		$userBelovedOnes = array();
-		foreach ($userBelovedOnesArray as $key => $userBelovedOne) {
-			$userBelovedOnes[$userBelovedOne['UserBelovedOne']['id']] = $userBelovedOne['UserBelovedOneRelationship']['name'] . ': ' . $userBelovedOne['UserBelovedOne']['full_name'];
-		}
-		$this->set(compact('userBelovedOnes'));
+		$userBelovedOne = $this->Event->UserBelovedOne->find('first', array('recursive' => 0,
+																			'fields' => array('UserBelovedOne.id', 'UserBelovedOne.full_name', 'UserBelovedOneRelationship.name'),
+																			'conditions' => array('UserBelovedOne.id' => $user_beloved_one_id)));
+		
+		$this->set(compact('userBelovedOne'));
 	}
 
 /**
