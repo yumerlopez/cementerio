@@ -69,12 +69,25 @@ class MultimediaController extends AppController {
  */
 	public function add($multimedia_type, $user_beloved_one_id = null) {
 		if ($this->request->is('post')) {
-			$this->Multimedia->create();
-			if ($this->Multimedia->save($this->request->data)) {
-				$this->Flash->success(__('The multimedia has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+			$dataSource = $this->Multimedia->getDataSource();
+			$dataSource->begin();
+			try {
+				$this->request->data['Multimedia']['url'] = $this->__get_multimedia_path($this->request->data['Multimedia']['multimedia_file'], $multimedia_type);
+//				print_r($this->request->data);
+				$this->Multimedia->create();
+				if ($this->Multimedia->save($this->request->data)) {
+					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $this->request->data['Multimedia']['url']);
+					chmod(WWW_ROOT . $this->request->data['Multimedia']['url'], 0777);
+					$dataSource->commit();
+					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
+					return $this->redirect(array('action' => 'index'));
+				} else {
+					$dataSource->rollback();
+					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				}
+			} catch (Exception $exc) {
+				$dataSource->rollback();
+				$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		}
 		$this->set('multimedia_type', $multimedia_type);
@@ -143,5 +156,25 @@ class MultimediaController extends AppController {
 			$this->Flash->error(__('The multimedia could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+	
+	private function __get_multimedia_path($multimedia_file, $multimedia_type) {
+		$user = $this->Session->read('CurrentSessionUser');
+		if (isset($multimedia_file) && !empty($multimedia_file) && $multimedia_file['error'] === 0) {
+			if (is_uploaded_file($multimedia_file['tmp_name'])) {
+				$filename = basename(strtolower(str_replace(' ', '_', $multimedia_file['name'])));
+				$filename_extension = explode(".", $filename);
+				$file = $this->_generateRandomString() . '.' . $filename_extension[sizeof($filename_extension) - 1];
+				if ($multimedia_type === 'photo') {
+					$filen_path = 'img' . DS . 'users' . DS . $user['id'] . DS . 'photos' . DS . $file;
+				}
+				if ($multimedia_type === 'video') {
+					$filen_path = 'video' . DS . 'users' . DS . $user['id'] . DS . $file;
+				}
+			} else {
+				throw new Exception('Error uploading multimedia');
+			}
+		}
+		return $filen_path;
 	}
 }

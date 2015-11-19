@@ -1,5 +1,17 @@
 <?php $user = $this->Session->read('CurrentSessionUser');?>
 <div class="col-color" id="content_info">
+	<?php echo $this->Html->script(array('tiny_mce/tinymce.min.js'));?>
+	<script type="text/javascript">
+		tinymce.init({
+			selector: "textarea",
+			plugins: [
+				"advlist autolink lists link image charmap print preview anchor",
+				"searchreplace visualblocks code fullscreen",
+				"insertdatetime media table contextmenu paste"
+			],
+			toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+		});
+	</script>
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h1>
