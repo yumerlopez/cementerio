@@ -76,8 +76,14 @@ class MultimediaController extends AppController {
 //				print_r($this->request->data);
 				$this->Multimedia->create();
 				if ($this->Multimedia->save($this->request->data)) {
-					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $this->request->data['Multimedia']['url']);
-					chmod(WWW_ROOT . $this->request->data['Multimedia']['url'], 0777);
+					if ($multimedia_type === 'photo') {
+						$folder = 'img' . DS;
+					}
+					if ($multimedia_type === 'video') {
+						$folder = 'video' . DS;
+					}
+					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']);
+					chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777);
 					$dataSource->commit();
 					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
 					return $this->redirect(array('action' => 'index'));
@@ -166,10 +172,10 @@ class MultimediaController extends AppController {
 				$filename_extension = explode(".", $filename);
 				$file = $this->_generateRandomString() . '.' . $filename_extension[sizeof($filename_extension) - 1];
 				if ($multimedia_type === 'photo') {
-					$filen_path = 'img' . DS . 'users' . DS . $user['id'] . DS . 'photos' . DS . $file;
+					$filen_path = 'users' . DS . $user['id'] . DS . 'photos' . DS . $file;
 				}
 				if ($multimedia_type === 'video') {
-					$filen_path = 'video' . DS . 'users' . DS . $user['id'] . DS . $file;
+					$filen_path = 'users' . DS . $user['id'] . DS . $file;
 				}
 			} else {
 				throw new Exception('Error uploading multimedia');

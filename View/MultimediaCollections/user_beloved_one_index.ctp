@@ -26,7 +26,48 @@
 		</div>
 	</div>
 	<div class="row col-row">
-		<div class="col-xs-12 col-sm-12 col-md-12">
+		<?php
+//			print_r($multimediaCollections);
+			$multimedia_collections_rows = array_chunk($multimediaCollections, 6);
+//			print_r($multimedia_collections_rows);
+			foreach ($multimedia_collections_rows as $key => $multimedia_collections_row) {
+				echo '<div class="col-xs-12 col-sm-12 col-md-12">';
+					foreach ($multimedia_collections_row as $key1 => $multimedia_collection) {
+						echo '<div class="multimedia_collection">';
+							if ($multimedia_collection['MultimediaCollection']['id'] !== 0) {
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+									echo '<div class="multimedia_collection_front">';
+										if ($multimedia_collection['MultimediaCollection']['img_url'] !== '') {
+											echo $this->Html->image($multimedia_collection['MultimediaCollection']['img_url']);
+										} else {
+											echo $this->Html->image('user_profile/photo_album.png');
+										}
+									echo '</div>';
+								echo '</a>';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+									echo $multimedia_collection['MultimediaCollection']['name'];
+								echo '</a>';
+							} else {
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+									echo '<div class="multimedia_collection_front">';
+										echo $this->Html->image('user_profile/photo_album.png');
+									echo '</div>';
+								echo '</a>';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'add')) . '">';
+									if ($multimedia_collection_type === 'photo') {
+										echo __('Add New Photo Album');
+									}
+									if ($multimedia_collection_type === 'video') {
+										echo __('Add New Video Collection');
+									}
+								echo '</a>';
+							}
+						echo '</div>';
+					}
+				echo '</div>';
+			}
+		?>
+<!--		<div class="col-xs-12 col-sm-12 col-md-12">
 			<table cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
@@ -36,7 +77,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($multimediaCollections as $multimediaCollection): ?>
+					<?php foreach ($multimediaCollections as $multimediaCollection): ?>	
 						<tr>
 							<td><?php echo h($multimediaCollection['MultimediaCollection']['name']); ?>&nbsp;</td>
 							<td><?php echo h($multimediaCollection['MultimediaCollection']['description']); ?>&nbsp;</td>
@@ -52,7 +93,7 @@
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-		</div>
+		</div>-->
 	</div>
 	<script type="text/javascript">
 		$('.ajax').click(function(){

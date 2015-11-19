@@ -162,3 +162,13 @@ input[type="text"], input[type="email"] {
 .row table {
 	width: 100%;
 }
+
+.multimedia_collection {
+	width: 15%;
+    float: left;
+    margin-right: 15px;
+}
+
+.multimedia_collection_front img{
+	width: 100%;
+}

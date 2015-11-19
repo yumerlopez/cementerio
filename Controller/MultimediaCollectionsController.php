@@ -61,12 +61,18 @@ class MultimediaCollectionsController extends AppController {
 			$multimedia_collection_type = 'Video Collection';
 		}
 		
-		$this->Event->recursive = 0;
+		$this->MultimediaCollection->recursive = 0;
 		$query = array('conditions' => array('MultimediaCollection.user_beloved_one_id' => $user_beloved_one_id,
 											 'MultimediaCollectionType.name' => $multimedia_collection_type));
 		$this->Paginator->settings = $query;
 		$user_beloved_one = $this->MultimediaCollection->UserBelovedOne->find('first', array('conditions' => array('UserBelovedOne.id' => $user_beloved_one_id)));
-		$this->set('multimediaCollections', $this->Paginator->paginate());
+		$multimediaCollections['MultimediaCollection']['id'] = 0;
+		$multimediaCollectionsBD = $this->Paginator->paginate();
+		foreach ($multimediaCollectionsBD as $key => $multimediaCollectionBD) {
+			$multimediaCollectionsBD[$key]['MultimediaCollection']['img_url'] = $this->__get_cover_img($multimediaCollectionBD['MultimediaCollection']['id']);
+		}
+		array_unshift($multimediaCollectionsBD, $multimediaCollections);
+		$this->set('multimediaCollections', $multimediaCollectionsBD);
 		$this->set('user_beloved_one', $user_beloved_one);
 	}
 
@@ -161,5 +167,11 @@ class MultimediaCollectionsController extends AppController {
 			$this->Flash->error(__('The multimedia collection could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+	
+	private function __get_cover_img($multimedia_collection_id) {
+		$multimedia = $this->MultimediaCollection->Multimedia->find('first', array('conditions' => array('Multimedia.multimedia_collection_id' => $multimedia_collection_id)));
+		
+		return (isset($multimedia['Multimedia']['url']) ? $multimedia['Multimedia']['url'] : '');
 	}
 }
