@@ -16,7 +16,7 @@ class MultimediaController extends AppController {
 	public $components = array('Paginator');
 	
 	private $__unAuthorizedActions = array();
-	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view');
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'add_multimedia');
 
 
 	public function isAuthorized($user) {
@@ -33,8 +33,8 @@ class MultimediaController extends AppController {
 
 	function  beforeFilter() {
 		parent::beforeFilter();
-		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view');
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'add_multimedia');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'add_multimedia');
 	}
 
 /**
@@ -73,7 +73,6 @@ class MultimediaController extends AppController {
 			$dataSource->begin();
 			try {
 				$this->request->data['Multimedia']['url'] = $this->__get_multimedia_path($this->request->data['Multimedia']['multimedia_file'], $multimedia_type);
-//				print_r($this->request->data);
 				$this->Multimedia->create();
 				if ($this->Multimedia->save($this->request->data)) {
 					if ($multimedia_type === 'photo') {
@@ -114,6 +113,52 @@ class MultimediaController extends AppController {
 																												   'MultimediaCollectionType.name' => $multimedia_collection_type,
 																												   'MultimediaCollection.name' => $multimedia_collection)));
 		$this->set(compact('multimediaType', 'multimediaCollection', 'userBelovedOne'));
+	}
+	
+	public function add_multimedia($multimedia_type, $multimedia_collection_id = null) {
+		if ($this->request->is('post')) {
+			$dataSource = $this->Multimedia->getDataSource();
+			$dataSource->begin();
+			try {
+				$this->request->data['Multimedia']['url'] = $this->__get_multimedia_path($this->request->data['Multimedia']['multimedia_file'], $multimedia_type);
+				$this->Multimedia->create();
+				if ($this->Multimedia->save($this->request->data)) {
+					if ($multimedia_type === 'photo') {
+						$folder = 'img' . DS;
+					}
+					if ($multimedia_type === 'video') {
+						$folder = 'video' . DS;
+					}
+					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']);
+					chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777);
+					$dataSource->commit();
+					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
+					return $this->redirect(array('action' => 'index'));
+				} else {
+					$dataSource->rollback();
+					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				}
+			} catch (Exception $exc) {
+				$dataSource->rollback();
+				$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+			}
+		}
+		$this->set('multimedia_type', $multimedia_type);
+		if ($multimedia_type === 'photo') {
+			$multimedia_type = 'Photo';
+			$multimedia_collection_type = 'Photo Album';
+			$multimedia_collection = 'General Photo Album';
+		}
+		if ($multimedia_type === 'video') {
+			$multimedia_type = 'Video';
+			$multimedia_collection_type = 'Video Collection';
+			$multimedia_collection = 'General Video Collection';
+		}
+//		$userBelovedOne = $this->Multimedia->MultimediaCollection->UserBelovedOne->find('first', array('conditions' => array('UserBelovedOne.id' => $user_beloved_one_id)));
+		$multimediaType = $this->Multimedia->MultimediaType->find('first', array('conditions' => array('MultimediaType.name' => $multimedia_type)));
+		$multimediaCollection = $this->Multimedia->MultimediaCollection->find('first', array('recursive' => 1,
+																							 'conditions' => array('MultimediaCollection.id' => $multimedia_collection_id)));
+		$this->set(compact('multimediaType', 'multimediaCollection'/*, 'userBelovedOne'*/));
 	}
 
 /**

@@ -16,11 +16,11 @@
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h1>
 				<?php
-					if ($multimedia_collection_type === 'photo') {
-						echo __('Add Photo Albums of your ') . strtolower($userBelovedOne['UserBelovedOneRelationship']['name']) . " " . $userBelovedOne['UserBelovedOne']['full_name'];
+					if ($multimedia_type === 'photo') {
+						echo __('Add Photos to ') . $multimediaCollection['MultimediaCollection']['name'];
 					}
-					if ($multimedia_collection_type === 'video') {
-						echo __('Add Video Collection of ') . strtolower($userBelovedOne['UserBelovedOneRelationship']['name']) . " " . $userBelovedOne['UserBelovedOne']['full_name'];
+					if ($multimedia_type === 'video') {
+						echo __('Add Videos to ') . $multimediaCollection['MultimediaCollection']['name'];
 					}
 				?>
 			</h1>
@@ -28,10 +28,21 @@
 		<div class="multimediaCollections form">
 			<?php echo $this->Form->create('MultimediaCollection'); ?>
 				<div class="row">
-					<?php echo $this->Form->hidden('user_beloved_one_id', array('value' => $userBelovedOne['UserBelovedOne']['id'])); ?>
-					<?php echo $this->Form->hidden('multimedia_collection_type_id', array('value' => $multimediaCollectionType['MultimediaCollectionType']['id'])); ?>
-					<div class="col-xs-12 col-sm-12 col-md-12">
+					<?php echo $this->Form->hidden('multimedia_type_id', array('value' => $multimediaType['MultimediaType']['id'])); ?>
+					<?php echo $this->Form->hidden('multimedia_collection_id', array('value' => $multimediaCollection['MultimediaCollection']['id'])); ?>
+					
+					<div class="col-xs-12 col-sm-12 col-md-6">
 						<?php echo $this->Form->input('name', array('label' => __('Name*: '), 'required' => false)); ?>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-6">
+						<?php
+							if ($multimedia_type === 'photo') {
+								echo $this->Form->input('multimedia_files.', array('type' => 'file', 'accept' => 'image/*', 'label' => __('Select photos*: '), 'required' => false, 'multiple'));
+							}
+							if ($multimedia_type === 'video') {
+								echo $this->Form->input('multimedia_files.', array('type' => 'file', 'accept' => 'video/*', 'label' => __('Select videos*: '), 'required' => false, 'multiple'));
+							}
+						?>
 					</div>
 				</div>
 				<div class="row">

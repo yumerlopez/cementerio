@@ -83,12 +83,15 @@ class MultimediaCollectionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function view($multimedia_collection_type, $id = null) {
 		if (!$this->MultimediaCollection->exists($id)) {
 			throw new NotFoundException(__('Invalid multimedia collection'));
 		}
+		$this->set('multimedia_collection_type', $multimedia_collection_type);
 		$options = array('conditions' => array('MultimediaCollection.' . $this->MultimediaCollection->primaryKey => $id));
-		$this->set('multimediaCollection', $this->MultimediaCollection->find('first', $options));
+		$multimediaCollection = $this->MultimediaCollection->find('first', $options);
+//		print_r($multimediaCollection);
+		$this->set('multimediaCollection', $multimediaCollection);
 	}
 
 /**

@@ -27,15 +27,13 @@
 	</div>
 	<div class="row col-row">
 		<?php
-//			print_r($multimediaCollections);
-			$multimedia_collections_rows = array_chunk($multimediaCollections, 6);
-//			print_r($multimedia_collections_rows);
+			$multimedia_collections_rows = array_chunk($multimediaCollections, 5);
 			foreach ($multimedia_collections_rows as $key => $multimedia_collections_row) {
 				echo '<div class="col-xs-12 col-sm-12 col-md-12">';
 					foreach ($multimedia_collections_row as $key1 => $multimedia_collection) {
 						echo '<div class="multimedia_collection">';
 							if ($multimedia_collection['MultimediaCollection']['id'] !== 0) {
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection_type, $multimedia_collection['MultimediaCollection']['id'])) . '">';
 									echo '<div class="multimedia_collection_front">';
 										if ($multimedia_collection['MultimediaCollection']['img_url'] !== '') {
 											echo $this->Html->image($multimedia_collection['MultimediaCollection']['img_url']);
@@ -44,16 +42,16 @@
 										}
 									echo '</div>';
 								echo '</a>';
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection_type, $multimedia_collection['MultimediaCollection']['id'])) . '">';
 									echo $multimedia_collection['MultimediaCollection']['name'];
 								echo '</a>';
 							} else {
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection['MultimediaCollection']['id'])) . '">';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'add', $multimedia_collection_type, $user_beloved_one['UserBelovedOne']['id'])) . '">';
 									echo '<div class="multimedia_collection_front">';
 										echo $this->Html->image('user_profile/photo_album.png');
 									echo '</div>';
 								echo '</a>';
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'add')) . '">';
+								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'add', $multimedia_collection_type, $user_beloved_one['UserBelovedOne']['id'])) . '">';
 									if ($multimedia_collection_type === 'photo') {
 										echo __('Add New Photo Album');
 									}
@@ -67,33 +65,6 @@
 				echo '</div>';
 			}
 		?>
-<!--		<div class="col-xs-12 col-sm-12 col-md-12">
-			<table cellpadding="0" cellspacing="0">
-				<thead>
-					<tr>
-						<th><?php echo $this->Paginator->sort('name'); ?></th>
-						<th><?php echo $this->Paginator->sort('description'); ?></th>
-						<th class="actions"><?php echo __('Actions'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($multimediaCollections as $multimediaCollection): ?>	
-						<tr>
-							<td><?php echo h($multimediaCollection['MultimediaCollection']['name']); ?>&nbsp;</td>
-							<td><?php echo h($multimediaCollection['MultimediaCollection']['description']); ?>&nbsp;</td>
-							<td class="actions">
-								<?php echo $this->Html->link(__('View'), array('action' => 'view', $multimediaCollection['MultimediaCollection']['id'])); ?>
-								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'edit', $multimediaCollection['MultimediaCollection']['id'])); ?>">
-									<?php echo __('Edit'); ?>
-								</a>
-								<?php // echo $this->Html->link(__('Edit'), array('action' => 'edit', $multimediaCollection['Event']['id'])); ?>
-								<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $multimediaCollection['MultimediaCollection']['id']), array('confirm' => __('Are you sure you want to delete album %s?', $multimediaCollection['MultimediaCollection']['name']))); ?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>-->
 	</div>
 	<script type="text/javascript">
 		$('.ajax').click(function(){
