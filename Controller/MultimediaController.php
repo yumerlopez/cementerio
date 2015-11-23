@@ -59,7 +59,18 @@ class MultimediaController extends AppController {
 			throw new NotFoundException(__('Invalid multimedia'));
 		}
 		$options = array('conditions' => array('Multimedia.' . $this->Multimedia->primaryKey => $id));
-		$this->set('multimedia', $this->Multimedia->find('first', $options));
+		$multimedia = $this->Multimedia->find('first', $options);
+		$options1 = array('conditions' => array('Multimedia.multimedia_collection_id' => $multimedia['Multimedia']['multimedia_collection_id'],
+											   'Multimedia.id <' => $multimedia['Multimedia']['id']),
+						  'order' => array('Multimedia.id' => 'DESC'));
+		$multimedia_previous =  $this->Multimedia->find('first', $options1);
+		$options2 = array('conditions' => array('Multimedia.multimedia_collection_id' => $multimedia['Multimedia']['multimedia_collection_id'],
+											   'Multimedia.id >' => $multimedia['Multimedia']['id']),
+						  'order' => array('Multimedia.id' => 'ASC'));
+		$multimedia_next =  $this->Multimedia->find('first', $options2);
+		$this->set('multimedia', $multimedia);
+		$this->set('multimedia_previous', $multimedia_previous);
+		$this->set('multimedia_next', $multimedia_next);
 	}
 
 /**

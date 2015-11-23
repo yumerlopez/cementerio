@@ -26,7 +26,7 @@
 					echo '<div class="col-xs-12 col-sm-12 col-md-12">';
 						foreach ($multimedia_row as $key1 => $multimedia) {
 							echo '<div class="multimedia_collection">';
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('controller' => 'multimedia', 'action' => 'view', $multimedia['id'])) . '">';
+								echo '<a href="javascript:void(0)" class="ajax-multimedia" actionto="' . $this->Html->url(array('controller' => 'multimedia', 'action' => 'view', $multimedia['id'])) . '">';
 									echo '<div class="multimedia_collection_front">';
 										if ($multimedia['url'] !== '') {
 											echo $this->Html->image($multimedia['url']);
@@ -35,7 +35,7 @@
 										}
 									echo '</div>';
 								echo '</a>';
-								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('controller' => 'multimedia', 'action' => 'view', $multimedia['id'])) . '">';
+								echo '<a href="javascript:void(0)" class="ajax-multimedia" actionto="' . $this->Html->url(array('controller' => 'multimedia', 'action' => 'view', $multimedia['id'])) . '">';
 									echo $multimedia['name'];
 								echo '</a>';
 							echo '</div>';
@@ -46,6 +46,12 @@
 			}
 		?>
 	</div>
+	<div class="img_view">
+		<div class="cerrar">
+			<span>CERRAR</span>
+		</div>
+		<div class="img_info"></div>
+	</div>
 	<script type="text/javascript">
 		$('.ajax').click(function(){
 			var actionto = $(this).attr('actionto');
@@ -53,38 +59,53 @@
 				url:actionto,
 				type:"GET",
 				success: function(data) {
-				  $('#content').html($(data).find('#content_info'));
-				  document.addEventListener("DOMContentLoaded", function() {
-					var elements = document.getElementsByTagName("INPUT");
-					for (var i = 0; i < elements.length; i++) {
-						elements[i].oninvalid = function(e) {
-							e.target.setCustomValidity("");
-							if (!e.target.validity.valid) {
-								e.target.setCustomValidity('<?php echo __('This field cannot be left blank or is invalid')?>');
-							}
-						};
-						elements[i].oninput = function(e) {
-							e.target.setCustomValidity("");
-						};
-					}
-				});
-				$('form').each(function(){
-					var max_width = 0;
-					$('#' + $(this).attr('id') + ' label').each(function(){
-						if (max_width < $(this).width()) {
-							max_width = $(this).width();
+					$('#content').html($(data).find('#content_info'));
+					document.addEventListener("DOMContentLoaded", function() {
+						var elements = document.getElementsByTagName("INPUT");
+						for (var i = 0; i < elements.length; i++) {
+							elements[i].oninvalid = function(e) {
+								e.target.setCustomValidity("");
+								if (!e.target.validity.valid) {
+									e.target.setCustomValidity('<?php echo __('This field cannot be left blank or is invalid')?>');
+								}
+							};
+							elements[i].oninput = function(e) {
+								e.target.setCustomValidity("");
+							};
 						}
 					});
-					if (max_width !== 0) {
-						$('#' + $(this).attr('id') + ' label').each(function(){
-							if (max_width !== $(this).width()) {
-								$(this).css('margin-right', max_width - $(this).width());
-							}
-						});
-					}
-				});
 				}
 			});
+		});
+		
+		$('.ajax-multimedia').click(function(){
+			var actionto = $(this).attr('actionto');
+			$.ajax({
+				url:actionto,
+				type:"GET",
+				success: function(data) {
+					$('.img_info').html($(data).find('#content_info'));
+					document.addEventListener("DOMContentLoaded", function() {
+						var elements = document.getElementsByTagName("INPUT");
+						for (var i = 0; i < elements.length; i++) {
+							elements[i].oninvalid = function(e) {
+								e.target.setCustomValidity("");
+								if (!e.target.validity.valid) {
+									e.target.setCustomValidity('<?php echo __('This field cannot be left blank or is invalid')?>');
+								}
+							};
+							elements[i].oninput = function(e) {
+								e.target.setCustomValidity("");
+							};
+						}
+					});
+					$('.img_view').show();
+				}
+			});
+		});
+		
+		$('.cerrar').click(function(){
+			$('.img_view').hide();
 		});
 	</script>
 </div>

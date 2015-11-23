@@ -177,3 +177,76 @@ input[type="text"], input[type="email"] {
 .multimedia_collection_front img {
 	width: 151px;
 }
+
+.img_view {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.9);
+}
+
+.multimedia_control {
+	/*display: none;*/
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	width: 3px;
+	height:100%;
+	background-color: rgba(0,0,0,1);
+	color:white;
+	vertical-align: middle;
+}
+.multimedia_control span {
+	position: absolute;
+	top: 50%;
+}
+
+.multimedia_control.previous {
+	left: 0;
+	z-index: 10;
+}
+
+.multimedia_control.previous span {
+	right: 30%;
+}
+
+.multimedia_control.next {
+	right: 0;
+	z-index: 10;
+}
+
+.multimedia_control.next span {
+	right: 30%;
+}
+
+.multimedia_control:hover {
+	width: 10%;
+}
+
+.big_img img {
+	width: 100%;
+}
+
+.multimedia_title {
+	color: white;
+}
+
+.big_img_description {
+	font-size: 14px;
+	overflow-y: scroll;
+	height: 100px;
+}
+
+.cerrar {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.cerrar span{
+	color: white;
+}
