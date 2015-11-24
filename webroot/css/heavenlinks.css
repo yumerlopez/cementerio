@@ -109,9 +109,21 @@ form .input {
     padding: 0 0 10px 0;
 }
 
-.new_item_img, .new_phone_img {
+.new_item_img, .new_phone_img, .new_multimedia_img {
 	width: 30px;
 	cursor: pointer;
+}
+
+div[class^="new_multimedia_item_"] {
+	margin-top: 20px;
+}
+
+img[id^="MultimediaCollection"][id$="Image"] {
+	width: 100%;
+}
+
+#MultimediaCollectionAddMultimediaForm textarea {
+	width: 100%;
 }
 
 .welcome h1 {

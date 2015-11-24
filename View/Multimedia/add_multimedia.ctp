@@ -1,17 +1,5 @@
 <?php $user = $this->Session->read('CurrentSessionUser');?>
 <div class="col-color" id="content_info">
-	<?php echo $this->Html->script(array('tiny_mce/tinymce.min.js'));?>
-	<script type="text/javascript">
-		tinymce.init({
-			selector: "textarea",
-			plugins: [
-				"advlist autolink lists link image charmap print preview anchor",
-				"searchreplace visualblocks code fullscreen",
-				"insertdatetime media table contextmenu paste"
-			],
-			toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-		});
-	</script>
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h1>
@@ -28,29 +16,112 @@
 		<div class="multimediaCollections form">
 			<?php echo $this->Form->create('MultimediaCollection'); ?>
 				<div class="row">
-					<?php echo $this->Form->hidden('multimedia_type_id', array('value' => $multimediaType['MultimediaType']['id'])); ?>
-					<?php echo $this->Form->hidden('multimedia_collection_id', array('value' => $multimediaCollection['MultimediaCollection']['id'])); ?>
+					<?php echo $this->Form->hidden('MultimediaCollection.0.multimedia_type_id', array('value' => $multimediaType['MultimediaType']['id'])); ?>
+					<?php echo $this->Form->hidden('MultimediaCollection.0.multimedia_collection_id', array('value' => $multimediaCollection['MultimediaCollection']['id'])); ?>
 					
-					<div class="col-xs-12 col-sm-12 col-md-6">
-						<?php echo $this->Form->input('name', array('label' => __('Name*: '), 'required' => false)); ?>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6">
+					<div class="col-xs-12 col-sm-12 col-md-12">
 						<?php
 							if ($multimedia_type === 'photo') {
-								echo $this->Form->input('multimedia_files.', array('type' => 'file', 'accept' => 'image/*', 'label' => __('Select photos*: '), 'required' => false, 'multiple'));
+								echo $this->Form->input('MultimediaCollection.0.multimedia_file', array('type' => 'file', 'accept' => 'image/*', 'label' => __('Select photo*: '), 'required' => false));
 							}
 							if ($multimedia_type === 'video') {
-								echo $this->Form->input('multimedia_files.', array('type' => 'file', 'accept' => 'video/*', 'label' => __('Select videos*: '), 'required' => false, 'multiple'));
+								echo $this->Form->input('MultimediaCollection.0.multimedia_file', array('type' => 'file', 'accept' => 'video/*', 'label' => __('Select video*: '), 'required' => false));
 							}
 						?>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4">
+						<!--<output id="list"></output>-->
+						<img id="MultimediaCollection0Image" />
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-8">
+						<?php echo $this->Form->input('MultimediaCollection.0.name', array('label' => __('Name*: '), 'required' => false)); ?>
+						<?php echo $this->Form->input('MultimediaCollection.0.description', array('label' => __('Description*: '), 'required' => false)); ?>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<?php echo $this->Form->input('description', array('label' => __('Description*: '), 'required' => false)); ?>
 					</div>
 				</div>
+				<div class="new_multimedia"></div>
+				<img class="new_multimedia_img" src="<?php echo $this->webroot . 'img/add.png'?>" alt="<?php echo __('Add new multimedia');?>" title="<?php echo __('Add new multimedia');?>" actionto="add"/>
+				<img class="new_multimedia_img" src="<?php echo $this->webroot . 'img/remove.png'?>" alt="<?php echo __('Remove new multimedia')?>" title="<?php echo __('Add new multimedia');?>" actionto="remove"/>
 			<?php echo $this->Form->end(__('Submit')); ?>
 		</div>
 	</div>
+	<script type="text/javascript">
+		bind_change_img_load();
+		
+		$('.new_multimedia_img').click(function (e) {
+			var multimedia = $('[id^="MultimediaCollection"][id$="MultimediaTypeId"]');
+			var actionto = $(this).attr('actionto');
+			if (actionto === 'add') {
+				var new_multimedia = $('.new_multimedia');
+				var new_multimedia_item = '<div class="new_multimedia_item_' + (multimedia.length) + '">' +
+											'<div class="row">' + 
+												'<input type="hidden" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_type_id]" value="1" id="MultimediaCollection' + (multimedia.length) + 'MultimediaTypeId">' + 
+												'<input type="hidden" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_collection_id]" value="9" id="MultimediaCollection' + (multimedia.length) + 'MultimediaCollectionId">' + 
+												'<div class="col-xs-12 col-sm-12 col-md-12">' + 
+													'<div class="input file">' + 
+														'<label for="MultimediaCollection' + (multimedia.length) + 'MultimediaFile">Select photo*: </label>' + 
+														'<input type="file" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_file]" accept="image/*" id="MultimediaCollection' + (multimedia.length) + 'MultimediaFile">' + 
+													'</div>' + 
+												'</div>' + 
+												'<div class="col-xs-12 col-sm-12 col-md-4">' + 
+													'<img id="MultimediaCollection' + (multimedia.length) + 'Image" />' + 
+												'</div>' + 
+												'<div class="col-xs-12 col-sm-12 col-md-8">' + 
+													'<div class="input text">' + 
+														'<label for="MultimediaCollection' + (multimedia.length) + 'Name" style="margin-right: 46px;">Name*: </label>' + 
+														'<input name="data[MultimediaCollection][' + (multimedia.length) + '][name]" maxlength="1000" type="text" id="MultimediaCollection' + (multimedia.length) + 'Name">' + 
+													'</div>' + 
+													'<div class="input textarea">' + 
+														'<label for="MultimediaCollection' + (multimedia.length) + 'Description" style="margin-right: 7px;">Description*: </label>' + 
+														'<textarea name="data[MultimediaCollection][' + (multimedia.length) + '][description]" cols="30" rows="6" id="MultimediaCollection' + (multimedia.length) + 'Description"></textarea>' + 
+													'</div>' + 
+												'</div>' + 
+											'</div>' + 
+										  '</div>';
+				new_multimedia.html(new_multimedia.html() + new_multimedia_item);
+				$('form').each(function(){
+					var max_width = 0;
+					$('#' + $(this).attr('id') + ' label').each(function(){
+						if (max_width < $(this).width()) {
+							max_width = $(this).width();
+						}
+					});
+					if (max_width !== 0) {
+						$('#' + $(this).attr('id') + ' label').each(function(){
+							if (max_width !== $(this).width()) {
+								$(this).css('margin-right', max_width - $(this).width());
+							}
+						});
+						$('.placerholder').each(function(){
+							if (max_width !== $(this).width()) {
+								$(this).css('margin-left', max_width);
+							}
+						});
+					}
+
+				});
+				bind_change_img_load();
+			} else if(actionto === 'remove') {
+				if (new_multimedia.length > 1) {
+					$('.new_multimedia_item_' + (new_multimedia.length - 1)).remove();
+				}
+			}
+		});
+		
+		function bind_change_img_load() {
+			$('[id^="MultimediaCollection"][id$="MultimediaFile"]').change(function(evt){
+				var reader = new FileReader();
+				var index = $(this).attr('id');
+				index = index.replace('MultimediaCollection', '');
+				index = index.replace('MultimediaFile', '');
+				reader.onload = function (e) {
+					$('#MultimediaCollection' + index + 'Image').attr('src', e.target.result);
+				};
+				reader.readAsDataURL(this.files[0]);
+			});
+		}
+	</script>
 </div>

@@ -2,7 +2,7 @@
 	<div class="row col-row">
 		<div class="col-xs-9 col-sm-9 col-md-9">
 			<h1><?php echo h($multimediaCollection['MultimediaCollection']['name']); ?></h1>
-			<?php echo h($multimediaCollection['MultimediaCollection']['description']); ?>
+			<?php echo $multimediaCollection['MultimediaCollection']['description']; ?>
 		</div>
 		<div class="col-xs-3 col-sm-3 col-md-3">
 			<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('controller' => 'multimedia', 'action' => 'add_multimedia', $multimedia_collection_type, $multimediaCollection['MultimediaCollection']['id'])); ?>">
@@ -21,7 +21,6 @@
 		<?php
 			if (!empty($multimediaCollection)) {
 				$multimedia_rows = array_chunk($multimediaCollection['Multimedia'], 5);
-//				print_r($multimedia_collection_rows);
 				foreach ($multimedia_rows as $key => $multimedia_row) {
 					echo '<div class="col-xs-12 col-sm-12 col-md-12">';
 						foreach ($multimedia_row as $key1 => $multimedia) {
@@ -42,13 +41,12 @@
 						}
 					echo '</div>';
 				}
-				
 			}
 		?>
 	</div>
 	<div class="img_view">
 		<div class="cerrar">
-			<span>CERRAR</span>
+			<span><?php echo __('CLOSE IMAGES')?></span>
 		</div>
 		<div class="img_info"></div>
 	</div>

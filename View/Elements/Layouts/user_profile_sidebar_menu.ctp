@@ -16,7 +16,7 @@
 		</a>
 	</div>
 	<div class="col-xs-2 col-sm-2 col-md-12 options">
-		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'add')); ?>">
+		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>">
 			<img src="<?php echo $this->webroot . 'img/user_profile/setting.png'?>" width="70px" height="70px" alt="<?php echo __('Add User Test')?>" title="<?php echo __('Add User Test')?>"/>
 		</a>
 	</div>
