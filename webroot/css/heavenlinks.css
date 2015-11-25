@@ -118,7 +118,7 @@ div[class^="new_multimedia_item_"] {
 	margin-top: 20px;
 }
 
-img[id^="MultimediaCollection"][id$="Image"] {
+img[id^="MultimediaCollection"][id$="Image"],  video[id^="MultimediaCollection"][id$="Video"]{
 	width: 100%;
 }
 

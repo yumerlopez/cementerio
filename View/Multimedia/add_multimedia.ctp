@@ -30,8 +30,14 @@
 						?>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-4">
-						<!--<output id="list"></output>-->
-						<img id="MultimediaCollection0Image" />
+						<?php
+							if ($multimedia_type === 'photo') {
+								echo '<img id="MultimediaCollection0Image" />';
+							}
+							if ($multimedia_type === 'video') {
+								echo '<video id="MultimediaCollection0Video" />';
+							}
+						?>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-8">
 						<?php echo $this->Form->input('MultimediaCollection.0.name', array('label' => __('Name*: '), 'required' => false)); ?>
@@ -113,14 +119,30 @@
 		
 		function bind_change_img_load() {
 			$('[id^="MultimediaCollection"][id$="MultimediaFile"]').change(function(evt){
-				var reader = new FileReader();
 				var index = $(this).attr('id');
 				index = index.replace('MultimediaCollection', '');
 				index = index.replace('MultimediaFile', '');
-				reader.onload = function (e) {
-					$('#MultimediaCollection' + index + 'Image').attr('src', e.target.result);
-				};
-				reader.readAsDataURL(this.files[0]);
+				<?php if ($multimedia_type === 'photo') { ?>
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$('#MultimediaCollection' + index + 'Image').attr('src', e.target.result);
+					};
+					reader.readAsDataURL(this.files[0]);
+				<?php } ?>
+				<?php if ($multimedia_type === 'video') { ?>
+					var file = this.files[0];
+					var type = file.type;
+					var videoNode = document.querySelector('#MultimediaCollection' + index + 'Video');
+					var canPlay = videoNode.canPlayType(type);
+					canPlay = (canPlay === '' ? 'no' : canPlay);
+					var isError = canPlay === 'no';
+					if (isError) {
+						return;
+					}
+
+					var fileURL = URL.createObjectURL(file);
+					$('#MultimediaCollection' + index + 'Video').attr('src', fileURL);
+				<?php } ?>
 			});
 		}
 	</script>
