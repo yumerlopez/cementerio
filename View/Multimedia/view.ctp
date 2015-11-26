@@ -13,7 +13,14 @@
 		?>
 		<div class="col-xs-8 col-sm-8 col-md-8">
 			<div class="big_img">
-				<?php echo $this->Html->image($multimedia['Multimedia']['url']); ?>
+				<?php
+					if ($multimedia['MultimediaType']['name'] === 'Photo') {
+						echo $this->Html->image($multimedia['Multimedia']['url']);
+					}
+					if ($multimedia['MultimediaType']['name'] === 'Video') {
+						echo '<video controls src="' . $this->webroot . 'video' . DS . $multimedia['Multimedia']['url'] . '"/>';
+					}
+				?>
 			</div>
 			<h1 class="multimedia_title">
 				<?php echo h($multimedia['Multimedia']['name']) ?>

@@ -92,11 +92,15 @@ class MultimediaController extends AppController {
 					if ($multimedia_type === 'video') {
 						$folder = 'video' . DS;
 					}
-					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']);
-					chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777);
-					$dataSource->commit();
-					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
-					return $this->redirect(array('action' => 'index'));
+					if (move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']) && 
+						chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777)) {
+						$dataSource->commit();
+						$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
+						return $this->redirect(array('action' => 'index'));			
+					} else {
+						$dataSource->rollback();
+						$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					}
 				} else {
 					$dataSource->rollback();
 					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
@@ -144,13 +148,23 @@ class MultimediaController extends AppController {
 					if ($multimedia_type === 'video') {
 						$folder = 'video' . DS;
 					}
+					$bool = true;
 					foreach ($this->request->data['Multimedia'] as $key => $multimedia_item) {
-						move_uploaded_file($multimedia_item['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $multimedia_item['url']);
-						chmod(WWW_ROOT . $folder . $multimedia_item['url'], 0777);
+						if ($bool) {
+							$bool &= move_uploaded_file($multimedia_item['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $multimedia_item['url']);
+							$bool &= chmod(WWW_ROOT . $folder . $multimedia_item['url'], 0777);
+						} else {
+							break;
+						}
 					}
-					$dataSource->commit();
-					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
-					return $this->redirect(array('action' => 'index'));
+					if ($bool) {
+						$dataSource->commit();
+						$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
+						return $this->redirect(array('action' => 'index'));
+					} else {
+						$dataSource->rollback();
+						$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					}
 				} else {
 					$dataSource->rollback();
 					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));

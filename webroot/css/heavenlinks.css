@@ -190,6 +190,13 @@ input[type="text"], input[type="email"] {
 	width: 151px;
 }
 
+.multimedia_collection_front video {
+	width: 151px;
+	position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .img_view {
 	display: none;
 	position: fixed;
@@ -240,6 +247,10 @@ input[type="text"], input[type="email"] {
 
 .big_img img {
 	width: 70%;
+}
+
+.big_img video {
+	width: 100%;
 }
 
 .multimedia_title {

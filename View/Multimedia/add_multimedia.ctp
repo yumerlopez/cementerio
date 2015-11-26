@@ -68,12 +68,12 @@
 												'<input type="hidden" name="data[Multimedia][' + (multimedia.length) + '][multimedia_collection_id]" value="<?php echo $multimediaCollection['MultimediaCollection']['id']; ?>" id="Multimedia' + (multimedia.length) + 'MultimediaId">' + 
 												'<div class="col-xs-12 col-sm-12 col-md-12">' + 
 													'<div class="input file">' + 
-														'<label for="Multimedia' + (multimedia.length) + 'MultimediaFile">Select photo*: </label>' + 
-														'<input type="file" name="data[Multimedia][' + (multimedia.length) + '][multimedia_file]" accept="image/*" id="Multimedia' + (multimedia.length) + 'MultimediaFile">' + 
+														'<label for="Multimedia' + (multimedia.length) + 'MultimediaFile">Select <?php echo $multimedia_type?>*: </label>' + 
+														'<input type="file" name="data[Multimedia][' + (multimedia.length) + '][multimedia_file]" accept="<?php if ($multimedia_type === 'photo') {echo 'image';}if ($multimedia_type === 'video') {echo 'video';}?>/*" id="Multimedia' + (multimedia.length) + 'MultimediaFile">' + 
 													'</div>' + 
 												'</div>' + 
 												'<div class="col-xs-12 col-sm-12 col-md-4">' + 
-													'<img id="Multimedia' + (multimedia.length) + 'Image" />' + 
+													'<<?php if ($multimedia_type === 'photo') {echo 'img';}if ($multimedia_type === 'video') {echo 'video';}?> id="Multimedia' + (multimedia.length) + '<?php if ($multimedia_type === 'photo') {echo 'Image';}if ($multimedia_type === 'video') {echo 'Video';}?>" />' + 
 												'</div>' + 
 												'<div class="col-xs-12 col-sm-12 col-md-8">' + 
 													'<div class="input text">' + 

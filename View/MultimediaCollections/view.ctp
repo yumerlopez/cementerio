@@ -28,7 +28,12 @@
 								echo '<a href="javascript:void(0)" class="ajax-multimedia" actionto="' . $this->Html->url(array('controller' => 'multimedia', 'action' => 'view', $multimedia['id'])) . '">';
 									echo '<div class="multimedia_collection_front">';
 										if ($multimedia['url'] !== '') {
-											echo $this->Html->image($multimedia['url']);
+											if ($multimedia_collection_type === 'photo') {
+												echo $this->Html->image($multimedia['url']);
+											}
+											if ($multimedia_collection_type === 'video') {
+												echo '<video src="' . $this->webroot . 'video' . DS . $multimedia['url'] . '"/>';
+											}
 										} else {
 											echo $this->Html->image('user_profile/photo_album.png');
 										}
@@ -46,7 +51,15 @@
 	</div>
 	<div class="img_view">
 		<div class="cerrar">
-			<span><?php echo __('CLOSE IMAGES')?></span>
+			<?php
+				if ($multimedia_collection_type === 'photo') {
+					echo '<span>' . __('CLOSE IMAGE') . '</span>';
+				}
+				if ($multimedia_collection_type === 'video') {
+					echo '<span>' . __('CLOSE VIDEO') . '</span>';
+				}
+			?>
+			
 		</div>
 		<div class="img_info"></div>
 	</div>
@@ -104,6 +117,7 @@
 		
 		$('.cerrar').click(function(){
 			$('.img_view').hide();
+			$('.img_info').html('');
 		});
 	</script>
 </div>

@@ -36,7 +36,12 @@
 								echo '<a href="javascript:void(0)" class="ajax" actionto="' . $this->Html->url(array('action' => 'view', $multimedia_collection_type, $multimedia_collection['MultimediaCollection']['id'])) . '">';
 									echo '<div class="multimedia_collection_front">';
 										if ($multimedia_collection['MultimediaCollection']['img_url'] !== '') {
-											echo $this->Html->image($multimedia_collection['MultimediaCollection']['img_url']);
+											if ($multimedia_collection_type === 'photo') {
+												echo $this->Html->image($multimedia_collection['MultimediaCollection']['img_url']);
+											}
+											if ($multimedia_collection_type === 'video') {
+												echo '<video src="' . $this->webroot . 'video' . DS . $multimedia_collection['MultimediaCollection']['img_url'] . '"/>';
+											}
 										} else {
 											echo $this->Html->image('user_profile/photo_album.png');
 										}
