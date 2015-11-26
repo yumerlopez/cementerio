@@ -14,34 +14,34 @@
 			</h1>
 		</div>
 		<div class="multimediaCollections form">
-			<?php echo $this->Form->create('MultimediaCollection'); ?>
+			<?php echo $this->Form->create('Multimedia', array('type' => 'file', 'novalidate' => true)); ?>
 				<div class="row">
-					<?php echo $this->Form->hidden('MultimediaCollection.0.multimedia_type_id', array('value' => $multimediaType['MultimediaType']['id'])); ?>
-					<?php echo $this->Form->hidden('MultimediaCollection.0.multimedia_collection_id', array('value' => $multimediaCollection['MultimediaCollection']['id'])); ?>
+					<?php echo $this->Form->hidden('Multimedia.0.multimedia_type_id', array('value' => $multimediaType['MultimediaType']['id'])); ?>
+					<?php echo $this->Form->hidden('Multimedia.0.multimedia_collection_id', array('value' => $multimediaCollection['MultimediaCollection']['id'])); ?>
 					
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<?php
 							if ($multimedia_type === 'photo') {
-								echo $this->Form->input('MultimediaCollection.0.multimedia_file', array('type' => 'file', 'accept' => 'image/*', 'label' => __('Select photo*: '), 'required' => false));
+								echo $this->Form->input('Multimedia.0.multimedia_file', array('type' => 'file', 'accept' => 'image/*', 'label' => __('Select photo*: '), 'required' => false));
 							}
 							if ($multimedia_type === 'video') {
-								echo $this->Form->input('MultimediaCollection.0.multimedia_file', array('type' => 'file', 'accept' => 'video/*', 'label' => __('Select video*: '), 'required' => false));
+								echo $this->Form->input('Multimedia.0.multimedia_file', array('type' => 'file', 'accept' => 'video/*', 'label' => __('Select video*: '), 'required' => false));
 							}
 						?>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-4">
 						<?php
 							if ($multimedia_type === 'photo') {
-								echo '<img id="MultimediaCollection0Image" />';
+								echo '<img id="Multimedia0Image" />';
 							}
 							if ($multimedia_type === 'video') {
-								echo '<video id="MultimediaCollection0Video" />';
+								echo '<video id="Multimedia0Video" />';
 							}
 						?>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-8">
-						<?php echo $this->Form->input('MultimediaCollection.0.name', array('label' => __('Name*: '), 'required' => false)); ?>
-						<?php echo $this->Form->input('MultimediaCollection.0.description', array('label' => __('Description*: '), 'required' => false)); ?>
+						<?php echo $this->Form->input('Multimedia.0.name', array('label' => __('Name*: '), 'required' => false)); ?>
+						<?php echo $this->Form->input('Multimedia.0.description', array('label' => __('Description*: '), 'required' => false)); ?>
 					</div>
 				</div>
 				<div class="row">
@@ -58,31 +58,31 @@
 		bind_change_img_load();
 		
 		$('.new_multimedia_img').click(function (e) {
-			var multimedia = $('[id^="MultimediaCollection"][id$="MultimediaTypeId"]');
+			var multimedia = $('[id^="Multimedia"][id$="MultimediaTypeId"]');
 			var actionto = $(this).attr('actionto');
 			if (actionto === 'add') {
 				var new_multimedia = $('.new_multimedia');
 				var new_multimedia_item = '<div class="new_multimedia_item_' + (multimedia.length) + '">' +
 											'<div class="row">' + 
-												'<input type="hidden" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_type_id]" value="1" id="MultimediaCollection' + (multimedia.length) + 'MultimediaTypeId">' + 
-												'<input type="hidden" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_collection_id]" value="9" id="MultimediaCollection' + (multimedia.length) + 'MultimediaCollectionId">' + 
+												'<input type="hidden" name="data[Multimedia][' + (multimedia.length) + '][multimedia_type_id]" value="<?php echo $multimediaType['MultimediaType']['id']; ?>" id="Multimedia' + (multimedia.length) + 'MultimediaTypeId">' + 
+												'<input type="hidden" name="data[Multimedia][' + (multimedia.length) + '][multimedia_collection_id]" value="<?php echo $multimediaCollection['MultimediaCollection']['id']; ?>" id="Multimedia' + (multimedia.length) + 'MultimediaId">' + 
 												'<div class="col-xs-12 col-sm-12 col-md-12">' + 
 													'<div class="input file">' + 
-														'<label for="MultimediaCollection' + (multimedia.length) + 'MultimediaFile">Select photo*: </label>' + 
-														'<input type="file" name="data[MultimediaCollection][' + (multimedia.length) + '][multimedia_file]" accept="image/*" id="MultimediaCollection' + (multimedia.length) + 'MultimediaFile">' + 
+														'<label for="Multimedia' + (multimedia.length) + 'MultimediaFile">Select photo*: </label>' + 
+														'<input type="file" name="data[Multimedia][' + (multimedia.length) + '][multimedia_file]" accept="image/*" id="Multimedia' + (multimedia.length) + 'MultimediaFile">' + 
 													'</div>' + 
 												'</div>' + 
 												'<div class="col-xs-12 col-sm-12 col-md-4">' + 
-													'<img id="MultimediaCollection' + (multimedia.length) + 'Image" />' + 
+													'<img id="Multimedia' + (multimedia.length) + 'Image" />' + 
 												'</div>' + 
 												'<div class="col-xs-12 col-sm-12 col-md-8">' + 
 													'<div class="input text">' + 
-														'<label for="MultimediaCollection' + (multimedia.length) + 'Name" style="margin-right: 46px;">Name*: </label>' + 
-														'<input name="data[MultimediaCollection][' + (multimedia.length) + '][name]" maxlength="1000" type="text" id="MultimediaCollection' + (multimedia.length) + 'Name">' + 
+														'<label for="Multimedia' + (multimedia.length) + 'Name" style="margin-right: 46px;">Name*: </label>' + 
+														'<input name="data[Multimedia][' + (multimedia.length) + '][name]" maxlength="1000" type="text" id="Multimedia' + (multimedia.length) + 'Name">' + 
 													'</div>' + 
 													'<div class="input textarea">' + 
-														'<label for="MultimediaCollection' + (multimedia.length) + 'Description" style="margin-right: 7px;">Description*: </label>' + 
-														'<textarea name="data[MultimediaCollection][' + (multimedia.length) + '][description]" cols="30" rows="6" id="MultimediaCollection' + (multimedia.length) + 'Description"></textarea>' + 
+														'<label for="Multimedia' + (multimedia.length) + 'Description" style="margin-right: 7px;">Description*: </label>' + 
+														'<textarea name="data[Multimedia][' + (multimedia.length) + '][description]" cols="30" rows="6" id="Multimedia' + (multimedia.length) + 'Description"></textarea>' + 
 													'</div>' + 
 												'</div>' + 
 											'</div>' + 
@@ -111,28 +111,28 @@
 				});
 				bind_change_img_load();
 			} else if(actionto === 'remove') {
-				if (new_multimedia.length > 1) {
-					$('.new_multimedia_item_' + (new_multimedia.length - 1)).remove();
+				if (multimedia.length > 1) {
+					$('.new_multimedia_item_' + (multimedia.length - 1)).remove();
 				}
 			}
 		});
 		
 		function bind_change_img_load() {
-			$('[id^="MultimediaCollection"][id$="MultimediaFile"]').change(function(evt){
+			$('[id^="Multimedia"][id$="MultimediaFile"]').change(function(evt){
 				var index = $(this).attr('id');
-				index = index.replace('MultimediaCollection', '');
+				index = index.replace('Multimedia', '');
 				index = index.replace('MultimediaFile', '');
 				<?php if ($multimedia_type === 'photo') { ?>
 					var reader = new FileReader();
 					reader.onload = function (e) {
-						$('#MultimediaCollection' + index + 'Image').attr('src', e.target.result);
+						$('#Multimedia' + index + 'Image').attr('src', e.target.result);
 					};
 					reader.readAsDataURL(this.files[0]);
 				<?php } ?>
 				<?php if ($multimedia_type === 'video') { ?>
 					var file = this.files[0];
 					var type = file.type;
-					var videoNode = document.querySelector('#MultimediaCollection' + index + 'Video');
+					var videoNode = document.querySelector('#Multimedia' + index + 'Video');
 					var canPlay = videoNode.canPlayType(type);
 					canPlay = (canPlay === '' ? 'no' : canPlay);
 					var isError = canPlay === 'no';
@@ -141,7 +141,7 @@
 					}
 
 					var fileURL = URL.createObjectURL(file);
-					$('#MultimediaCollection' + index + 'Video').attr('src', fileURL);
+					$('#Multimedia' + index + 'Video').attr('src', fileURL);
 				<?php } ?>
 			});
 		}

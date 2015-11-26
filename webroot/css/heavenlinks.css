@@ -118,11 +118,11 @@ div[class^="new_multimedia_item_"] {
 	margin-top: 20px;
 }
 
-img[id^="MultimediaCollection"][id$="Image"],  video[id^="MultimediaCollection"][id$="Video"]{
+img[id^="Multimedia"][id$="Image"],  video[id^="Multimedia"][id$="Video"]{
 	width: 100%;
 }
 
-#MultimediaCollectionAddMultimediaForm textarea {
+#MultimediaAddMultimediaForm textarea {
 	width: 100%;
 }
 
@@ -183,7 +183,7 @@ input[type="text"], input[type="email"] {
 
 .multimedia_collection_front {
 	width: 151px;
-    height: 130px;
+    height: 151px;
 }
 
 .multimedia_collection_front img {
@@ -239,7 +239,7 @@ input[type="text"], input[type="email"] {
 }
 
 .big_img img {
-	width: 100%;
+	width: 70%;
 }
 
 .multimedia_title {

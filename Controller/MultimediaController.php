@@ -128,20 +128,26 @@ class MultimediaController extends AppController {
 	
 	public function add_multimedia($multimedia_type, $multimedia_collection_id = null) {
 		if ($this->request->is('post')) {
+//			print_r($this->request->data);
 			$dataSource = $this->Multimedia->getDataSource();
 			$dataSource->begin();
 			try {
-				$this->request->data['Multimedia']['url'] = $this->__get_multimedia_path($this->request->data['Multimedia']['multimedia_file'], $multimedia_type);
+				foreach ($this->request->data['Multimedia'] as $key => $multimedia_item) {
+					$this->request->data['Multimedia'][$key]['url'] = $this->__get_multimedia_path($multimedia_item['multimedia_file'], $multimedia_type);
+				}
+//				print_r($this->request->data);
 				$this->Multimedia->create();
-				if ($this->Multimedia->save($this->request->data)) {
+				if ($this->Multimedia->saveMany($this->request->data['Multimedia'])) {
 					if ($multimedia_type === 'photo') {
 						$folder = 'img' . DS;
 					}
 					if ($multimedia_type === 'video') {
 						$folder = 'video' . DS;
 					}
-					move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']);
-					chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777);
+					foreach ($this->request->data['Multimedia'] as $key => $multimedia_item) {
+						move_uploaded_file($multimedia_item['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $multimedia_item['url']);
+						chmod(WWW_ROOT . $folder . $multimedia_item['url'], 0777);
+					}
 					$dataSource->commit();
 					$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
 					return $this->redirect(array('action' => 'index'));
