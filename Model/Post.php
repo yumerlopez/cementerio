@@ -1,19 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Event Model
+ * Post Model
  *
- * @property UserBelovedOne $UserBelovedOne
- * @property EventComment $EventComment
+ * @property User $User
+ * @property PostComment $PostComment
  */
-class Event extends AppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
+class Post extends AppModel {
 
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -24,9 +17,9 @@ class Event extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'UserBelovedOne' => array(
-			'className' => 'UserBelovedOne',
-			'foreignKey' => 'user_beloved_one_id',
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -39,9 +32,9 @@ class Event extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'EventComment' => array(
-			'className' => 'EventComment',
-			'foreignKey' => 'event_id',
+		'PostComment' => array(
+			'className' => 'PostComment',
+			'foreignKey' => 'post_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',

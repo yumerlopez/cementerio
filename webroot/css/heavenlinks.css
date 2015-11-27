@@ -246,7 +246,7 @@ input[type="text"], input[type="email"] {
 }
 
 .big_img img {
-	width: 70%;
+	width: 100%
 }
 
 .big_img video {
@@ -259,6 +259,10 @@ input[type="text"], input[type="email"] {
 
 .big_img_description {
 	font-size: 14px;
+}
+
+.big_img_comments {
+	font-size: 10px;
 	overflow-y: scroll;
 	height: 100px;
 }
@@ -272,4 +276,16 @@ input[type="text"], input[type="email"] {
 
 .cerrar span{
 	color: white;
+}
+
+.comments_box {
+	padding: 25px 15px;
+}
+
+.new_comment {
+	margin-top: 10px;
+}
+
+.new_comment textarea {
+	width: 100%;
 }

@@ -1,4 +1,5 @@
 <div id="content_info">
+	<?php $user = $this->Session->read('CurrentSessionUser');?>
 	<div class="row col-row" id="multimedia_view">
 		<?php
 			if (isset($multimedia_previous['Multimedia']['id'])) {
@@ -11,7 +12,7 @@
 				echo '</div>';
 			}
 		?>
-		<div class="col-xs-8 col-sm-8 col-md-8">
+		<div class="col-xs-7 col-sm-7 col-md-7">
 			<div class="big_img">
 				<?php
 					if ($multimedia['MultimediaType']['name'] === 'Photo') {
@@ -26,21 +27,27 @@
 				<?php echo h($multimedia['Multimedia']['name']) ?>
 			</h1>
 		</div>
-		<div class="col-color corners col-xs-4 col-sm-4 col-md-4">
+		<div class="col-color corners col-xs-5 col-sm-5 col-md-5 comments_box">
 			<div class="big_img_description">
 				<?php echo $multimedia['Multimedia']['description']; ?>
-				test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
-    test<br />
 			</div>
 			<div class="big_img_comments">
+				<?php
+					foreach ($multimedia['MultimediaComment'] as $key => $multimediaComment) {
+						echo '<div>';
+							echo $multimediaComment['comment'];
+						echo '</div>';
+					}
+				?>
+			</div>
+			<div class="new_comment">
+				<?php echo $this->Form->create('MultimediaComment', array('controller' => 'multimedia_comments', 'action' => 'add')); ?>
+					<?php
+						echo $this->Form->hidden('multimedia_id', array('value' => $multimedia['Multimedia']['id']));
+						echo $this->Form->hidden('user_id', array('value' => $user['id']));
+						echo $this->Form->input('comment');
+					?>
+				<?php echo $this->Form->end(__('Submit')); ?>
 			</div>
 		</div>
 		<?php

@@ -5,6 +5,7 @@ App::uses('AppModel', 'Model');
  *
  * @property MultimediaType $MultimediaType
  * @property MultimediaCollection $MultimediaCollection
+ * @property MultimediaComment $MultimediaComment
  */
 class Multimedia extends AppModel {
 
@@ -39,4 +40,26 @@ class Multimedia extends AppModel {
 			'order' => ''
 		)
 	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'MultimediaComment' => array(
+			'className' => 'MultimediaComment',
+			'foreignKey' => 'multimedia_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
 }
