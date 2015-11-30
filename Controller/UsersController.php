@@ -18,7 +18,7 @@ class UsersController extends AppController {
 	public $components = array('Paginator', 'Session');
 	
 	private $__unAuthorizedActions = array();
-	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture');
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture', 'search');
 
 
 	public function isAuthorized($user) {
@@ -35,8 +35,8 @@ class UsersController extends AppController {
 
 	function  beforeFilter() {
 		parent::beforeFilter();
-		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture');
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture', 'search');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout', 'set_edit_user_picture', 'search');
 	}
 
 /**
@@ -327,6 +327,19 @@ class UsersController extends AppController {
 			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 			$this->request->data = $this->User->find('first', $options);
 		}
+	}
+	
+	public function search () {
+		$this->Product->recursive = 1;
+		$this->Product->Behaviors->load('Containable');
+		$query = array(
+				'conditions' => array('UserStatus.name' => 'Activo',
+									  'OR' => array('User.name LIKE ' => '%' . $this->request->data['Product']['search'] . '%',
+													'User.last_name LIKE ' => '%' . $this->request->data['Product']['search'] . '%'))
+			);
+		$this->Paginator->settings = $query;
+		$users = $this->Paginator->paginate();
+		$this->set('users', $users);
 	}
 	
 	private function __updateUserPhone($user_id, $new_user_items, $model) {

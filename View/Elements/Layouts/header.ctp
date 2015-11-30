@@ -2,6 +2,11 @@
 <div class="row col-color header">
 	<div class="col-xs-9 col-sm-9 col-md-9">
 		<a href="<?php echo $this->Html->url("/") ?>">HeavenLinks</a>
+		<?php echo $this->Form->create('User', array('action' => 'search')); ?>
+			<?php
+				echo $this->Form->input('search', array('label' => false));
+			?>
+		<?php echo $this->Form->end(__('Search')); ?>
 	</div>
 	<div class="col-xs-3 col-sm-3 col-md-3 right">
 		<?php if (!empty($user)) { ?>

@@ -68,6 +68,13 @@ class MultimediaController extends AppController {
 											   'Multimedia.id >' => $multimedia['Multimedia']['id']),
 						  'order' => array('Multimedia.id' => 'ASC'));
 		$multimedia_next =  $this->Multimedia->find('first', $options2);
+		
+		foreach ($multimedia['MultimediaComment'] as $key => $multimedia_comment) {
+			$user = $this->Multimedia->MultimediaComment->User->find('first', array('recursive' => -1, 'conditions' => array('User.id' => $multimedia_comment['user_id'])));
+			$multimedia['MultimediaComment'][$key]['User'] = $user['User'];
+			unset($multimedia['MultimediaComment'][$key]['user_id']);
+		}
+		
 		$this->set('multimedia', $multimedia);
 		$this->set('multimedia_previous', $multimedia_previous);
 		$this->set('multimedia_next', $multimedia_next);

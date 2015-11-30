@@ -84,6 +84,7 @@ class EventsController extends AppController {
 			throw new NotFoundException(__('Invalid user beloved one'));
 		}
 		if ($this->request->is('post')) {
+//			print_r($this->request->data);
 			$this->Event->create();
 			if ($this->Event->save($this->request->data)) {
 				$this->Session->setFlash(__('The event has been saved.'), 'default', array('class' => 'success_flash'));

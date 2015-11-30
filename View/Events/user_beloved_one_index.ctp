@@ -27,7 +27,9 @@
 							<td><?php echo h($event['Event']['start']); ?>&nbsp;</td>
 							<td><?php echo h($event['Event']['end']); ?>&nbsp;</td>
 							<td class="actions">
-								<?php echo $this->Html->link(__('View'), array('action' => 'view', $event['Event']['id'])); ?>
+								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'view', $event['Event']['id'])); ?>">
+									<?php echo __('View'); ?>
+								</a>
 								<a href="javascript:void(0)" class="ajax" actionto="<?php echo $this->Html->url(array('action' => 'edit', $event['Event']['id'])); ?>">
 									<?php echo __('Edit'); ?>
 								</a>

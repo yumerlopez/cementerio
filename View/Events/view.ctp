@@ -1,3 +1,9 @@
+<?php $user = $this->Session->read('CurrentSessionUser');?>
+<div class="col-color" id="content_info">
+	<div class="row col-row">
+		
+	</div>
+</div>
 <div class="events view">
 <h2><?php echo __('Event'); ?></h2>
 	<dl>

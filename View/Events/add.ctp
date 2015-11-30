@@ -31,10 +31,10 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-6">
-						<?php echo $this->Form->input('start', array('label' => __('Birth Date*: '), 'required' => false, 'dateFormat' => __('YMD'), 'minYear' => date('Y') - 100,'maxYear' => date('Y'))); ?>
+						<?php echo $this->Form->input('start', array('label' => __('Start Date*: '), 'required' => false, 'dateFormat' => __('YMD'), 'minYear' => date('Y') - 100,'maxYear' => date('Y'))); ?>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6">
-						<?php echo $this->Form->input('end', array('label' => __('Date of Death*: '), 'required' => false, 'dateFormat' => __('YMD'), 'minYear' => date('Y') - 100,'maxYear' => date('Y'))); ?>
+						<?php echo $this->Form->input('end', array('label' => __('End Date*: '), 'required' => false, 'dateFormat' => __('YMD'), 'minYear' => date('Y') - 100,'maxYear' => date('Y'))); ?>
 					</div>
 				</div>
 			<?php echo $this->Form->end(__('Submit')); ?>

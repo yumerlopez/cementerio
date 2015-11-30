@@ -34,8 +34,41 @@
 			<div class="big_img_comments">
 				<?php
 					foreach ($multimedia['MultimediaComment'] as $key => $multimediaComment) {
-						echo '<div>';
-							echo $multimediaComment['comment'];
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
+						echo '</div>';
+						echo '<div class="comment">';
+							echo '<b>' . $multimediaComment['User']['name'] . ' ' . $multimediaComment['User']['last_name'] . ':</b> ' . $multimediaComment['comment'] . '<br />' . $multimediaComment['created'];
 						echo '</div>';
 					}
 				?>
