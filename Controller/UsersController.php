@@ -85,6 +85,9 @@ class UsersController extends AppController {
 						if ($this->UserPhone->saveMany($this->request->data['UserPhone'])) {
 							$dataSource->commit();
 							$this->Session->setFlash(__('The user has been saved.'), 'default', array('class' => 'success_flash'));
+							mkdir(WWW_ROOT . DS . 'img'  . DS . 'users' . DS . $this->User->id . DS . 'photos', 0777, true);
+							mkdir(WWW_ROOT . DS . 'img'  . DS . 'users' . DS . $this->User->id . DS . 'profile', 0777, true);
+							mkdir(WWW_ROOT . DS . 'video'  . DS . 'users' . DS . $this->User->id, 0777, true);
 							if ($this->Session->read('referer') == Router::url(array('controller' => 'users', 'action' => 'login_register'), true)) {
 								$this->Session->delete('referer');
 								return $this->redirect(array('action' => 'login_register'));
@@ -330,15 +333,25 @@ class UsersController extends AppController {
 	}
 	
 	public function search () {
-		$this->Product->recursive = 1;
-		$this->Product->Behaviors->load('Containable');
-		$query = array(
-				'conditions' => array('UserStatus.name' => 'Activo',
-									  'OR' => array('User.name LIKE ' => '%' . $this->request->data['Product']['search'] . '%',
-													'User.last_name LIKE ' => '%' . $this->request->data['Product']['search'] . '%'))
-			);
-		$this->Paginator->settings = $query;
-		$users = $this->Paginator->paginate();
+		$users = array();
+		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
+			$this->User->recursive = 1;
+			$this->User->Behaviors->load('Containable');
+			$current_user = $this->Session->read('CurrentSessionUser');
+			$query = array(
+					'conditions' => array('UserStatus.name' => 'Activo',
+										  'NOT' => array('User.id' => $current_user['id'],
+														 'Role.name' => 'Administrador'),
+										  'OR' => array('User.name LIKE ' => '%' . $this->request->data['User']['search'] . '%',
+														'User.last_name LIKE ' => '%' . $this->request->data['User']['search'] . '%'))
+				);
+			$this->Paginator->settings = $query;
+			$users = $this->Paginator->paginate();
+			foreach ($users as $key => $user) {
+				$users[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $user['User']['url_image']);
+			}
+			
+		}
 		$this->set('users', $users);
 	}
 	

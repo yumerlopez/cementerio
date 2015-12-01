@@ -91,7 +91,7 @@ CREATE TABLE `events` (
   PRIMARY KEY (`id`),
   KEY `events_user_beloved_one_fkey` (`user_beloved_one_id`),
   CONSTRAINT `events_user_beloved_one_fkey` FOREIGN KEY (`user_beloved_one_id`) REFERENCES `user_beloved_ones` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +100,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES (3,12,'Evento Prueba 01','<p>Evento Prueba 01</p>','2015-11-30 18:58:00','2015-12-30 18:58:00');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -507,7 +508,7 @@ CREATE TABLE `user_phones` (
   PRIMARY KEY (`id`),
   KEY `user_id_fkey` (`user_id`),
   CONSTRAINT `user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -516,7 +517,7 @@ CREATE TABLE `user_phones` (
 
 LOCK TABLES `user_phones` WRITE;
 /*!40000 ALTER TABLE `user_phones` DISABLE KEYS */;
-INSERT INTO `user_phones` VALUES (90,'+584143936537',1),(91,'+12015555558',1);
+INSERT INTO `user_phones` VALUES (90,'+584143936537',1),(91,'+12015555558',1),(92,'+584242160856',5);
 /*!40000 ALTER TABLE `user_phones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -575,7 +576,7 @@ CREATE TABLE `users` (
   CONSTRAINT `nationality_id_fkey` FOREIGN KEY (`nationality_id`) REFERENCES `nationalities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_status_id_fkey` FOREIGN KEY (`user_status_id`) REFERENCES `user_statuses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -584,8 +585,63 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Yumer','Lopez','admin@heavenlinks.com','$2a$10$X/oAkkv.rN..lSBwx3L3O.6a.hlUtMT4RxUZcBmVM2yfjzX58F.j2',1,1,1,3,'2015-10-23','2015-11-12','2015-11-02','users/1/profile/profile.jpeg'),(4,'Yumer','López','stratovarius48@gmail.com','$2a$10$G85ms5FqsEAj.PNm8sSk1eE0N7tN08jOKqOtzCFJqYyi4r2w9fa1O',1,1,1,4,'2015-10-29','2015-10-29',NULL,NULL);
+INSERT INTO `users` VALUES (1,'Yumer','Lopez','admin@heavenlinks.com','$2a$10$X/oAkkv.rN..lSBwx3L3O.6a.hlUtMT4RxUZcBmVM2yfjzX58F.j2',1,1,1,3,'2015-10-23','2015-11-12','2015-11-02','users/1/profile/profile.jpeg'),(4,'Yumer','López','stratovarius48@gmail.com','$2a$10$G85ms5FqsEAj.PNm8sSk1eE0N7tN08jOKqOtzCFJqYyi4r2w9fa1O',1,1,1,4,'2015-10-29','2015-12-01',NULL,'users/4/profile/profile.jpeg'),(5,'Carolina','De Sousa','carolcat1786@gmail.com','$2a$10$ELm.ql.YGlLPWvT05fjvD.G0AAHnfcXgOS8pr/KYTcpwKL74vfSua',2,1,1,4,'2015-12-01','2015-12-01','1987-01-17','users/5/profile/profile.jpeg');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_users`
+--
+
+DROP TABLE IF EXISTS `users_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `friend_id` int(11) DEFAULT NULL,
+  `users_users_status_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `users_users_user_id_fkey` (`user_id`),
+  KEY `users_users_friend_id_fkey` (`friend_id`),
+  KEY `users_users_status_id_fkey` (`users_users_status_id`),
+  CONSTRAINT `users_users_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `users_users_friend_id_fkey` FOREIGN KEY (`friend_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `users_users_status_id_fkey` FOREIGN KEY (`users_users_status_id`) REFERENCES `users_users_statuses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_users`
+--
+
+LOCK TABLES `users_users` WRITE;
+/*!40000 ALTER TABLE `users_users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_users_statuses`
+--
+
+DROP TABLE IF EXISTS `users_users_statuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_users_statuses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_users_statuses`
+--
+
+LOCK TABLES `users_users_statuses` WRITE;
+/*!40000 ALTER TABLE `users_users_statuses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_users_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -597,4 +653,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 16:14:31
+-- Dump completed on 2015-12-01 17:33:21

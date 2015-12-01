@@ -301,8 +301,27 @@ input[type="text"], input[type="email"] {
 
 #UserSearchForm .input {
 	float: left;
+	padding: 0;
+    font-size: small;
+	margin-top: 1%;
+	margin-left: 10px;
 }
 
 #UserSearchForm .submit {
-	float: right;
+	float: left;
+	font-size: small;
+	margin-top: 0;
+}
+
+.result_user {
+	text-align: left;
+	margin-top: 20px;
+}
+
+.result_user .result_user_img {
+	width: 100%;
+}
+
+.result_user_info {
+	font-size: xx-large;
 }

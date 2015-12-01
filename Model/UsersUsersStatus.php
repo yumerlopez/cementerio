@@ -1,30 +1,14 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Post Model
+ * UsersUsersStatus Model
  *
- * @property User $User
- * @property PostComment $PostComment
+ * @property UsersUser $UsersUser
  */
-class Post extends AppModel {
+class UsersUsersStatus extends AppModel {
 
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
 
 /**
  * hasMany associations
@@ -32,9 +16,9 @@ class Post extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'PostComment' => array(
-			'className' => 'PostComment',
-			'foreignKey' => 'post_id',
+		'UsersUser' => array(
+			'className' => 'UsersUser',
+			'foreignKey' => 'users_users_status_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
