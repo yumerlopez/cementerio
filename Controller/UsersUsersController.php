@@ -18,7 +18,7 @@ class UsersUsersController extends AppController {
 	public $components = array('Paginator', 'Flash', 'Session');
 	
 	private $__unAuthorizedActions = array();
-	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view');
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
 
 
 	public function isAuthorized($user) {
@@ -35,8 +35,8 @@ class UsersUsersController extends AppController {
 
 	function  beforeFilter() {
 		parent::beforeFilter();
-		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view');
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
 	}
 
 /**
@@ -132,5 +132,12 @@ class UsersUsersController extends AppController {
 			$this->Flash->error(__('The users user could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+	
+	public function ask_for_friendship() {
+		if ($this->request->is(array('ajax'))) {
+			$this->autoRender = false;
+			echo 'good';
+		}
 	}
 }

@@ -16,6 +16,11 @@
 		</a>
 	</div>
 	<div class="col-xs-2 col-sm-2 col-md-12 options">
+		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users_users', 'action' => 'friendship_index', $user['id'])); ?>">
+			<img src="<?php echo $this->webroot . 'img/user_profile/friendship.png'?>" width="70px" height="70px" alt="<?php echo __('Friends')?>" title="<?php echo __('Friends')?>"/>
+		</a>
+	</div>
+<!--	<div class="col-xs-2 col-sm-2 col-md-12 options">
 		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>">
 			<img src="<?php echo $this->webroot . 'img/user_profile/setting.png'?>" width="70px" height="70px" alt="<?php echo __('Add User Test')?>" title="<?php echo __('Add User Test')?>"/>
 		</a>
@@ -39,7 +44,7 @@
 		<a href="javascript:void(0)" actionto="<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>">
 			<img src="<?php echo $this->webroot . 'img/user_profile/calendar.png'?>" width="70px" height="70px" alt="<?php echo __('Edit Your Information')?>" title="<?php echo __('Edit Your Information')?>"/>
 		</a>
-	</div>
+	</div>-->
 </div>
 <script type="text/javascript">
 	$('.options a').click(function(){
