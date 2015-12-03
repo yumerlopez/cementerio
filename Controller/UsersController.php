@@ -334,7 +334,7 @@ class UsersController extends AppController {
 	
 	public function search () {
 		$users = array();
-		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
+//		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
 			$this->User->recursive = 1;
 			$this->User->Behaviors->load('Containable');
 			$current_user = $this->Session->read('CurrentSessionUser');
@@ -349,9 +349,11 @@ class UsersController extends AppController {
 			$users = $this->Paginator->paginate();
 			foreach ($users as $key => $user) {
 				$users[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $user['User']['url_image']);
+//				$user['MyFriends'] = $this->__get_friendship_stauts($user);
 			}
+//			print_r($users);	
 			
-		}
+//		}
 		$this->set('users', $users);
 	}
 	
@@ -359,8 +361,14 @@ class UsersController extends AppController {
 		foreach ($new_user_items as $key => $value) {
 			$new_user_items[$key]['user_id'] = $user_id;
 		}
-		print_r($new_user_items);
 		$this->User->{$model}->deleteAll(array($model . '.user_id' => $user_id), false);
 		$this->User->{$model}->saveMany($new_user_items);
+	}
+	
+	private function __invitation_was_sent($sender, $receiver) {
+//		if (empty($receiver['MyFriends'])) {
+//			return false;
+//		}
+		
 	}
 }

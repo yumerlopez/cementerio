@@ -9,9 +9,14 @@ App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
  * @property UserStatus $UserStatus
  * @property Role $Role
  * @property Email $Email
+ * @property EventComment $EventComment
+ * @property MultimediaComment $MultimediaComment
+ * @property PostComment $PostComment
+ * @property Post $Post
  * @property SocialNetwork $SocialNetwork
  * @property UserBelovedOne $UserBelovedOne
  * @property UserPhone $UserPhone
+ * @property User $User
  */
 class User extends AppModel {
 
@@ -80,6 +85,58 @@ class User extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'EventComment' => array(
+			'className' => 'EventComment',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'MultimediaComment' => array(
+			'className' => 'MultimediaComment',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'PostComment' => array(
+			'className' => 'PostComment',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Post' => array(
+			'className' => 'Post',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'SocialNetwork' => array(
 			'className' => 'SocialNetwork',
 			'foreignKey' => 'user_id',
@@ -120,6 +177,28 @@ class User extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+
+
+/**
+ * hasAndBelongsToMany associations
+ *
+ * @var array
+ */
+	public $hasAndBelongsToMany = array(
+		'MyFriends' => array(
+			'className' => 'User',
+			'joinTable' =>	'users_users',
+			'foreignKey' => 'user_id',
+			'associationForeignKey' => 'friend_id',
+			'unique' => 'keepExisting',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
+	);
 	
 	public function beforeSave($options = array()) {
 		if (isset($this->data[$this->alias]['password'])) {
@@ -128,4 +207,5 @@ class User extends AppModel {
 		}
 		return true;
 	}
+
 }

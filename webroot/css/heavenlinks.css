@@ -355,3 +355,13 @@ input[type="text"], input[type="email"] {
 	background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
 	text-decoration: none;
 }
+
+.result_user_info button:disabled {
+	background: #3cb0fd;
+	background-image: -webkit-linear-gradient(top, #DCDCDC, #696969);
+	background-image: -moz-linear-gradient(top, #DCDCDC, #696969);
+	background-image: -ms-linear-gradient(top, #DCDCDC, #696969);
+	background-image: -o-linear-gradient(top, #DCDCDC, #696969);
+	background-image: linear-gradient(to bottom, #DCDCDC, #696969);
+	text-decoration: none;
+}

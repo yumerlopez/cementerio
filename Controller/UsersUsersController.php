@@ -137,7 +137,18 @@ class UsersUsersController extends AppController {
 	public function ask_for_friendship() {
 		if ($this->request->is(array('ajax'))) {
 			$this->autoRender = false;
-			echo 'good';
+			if (!empty($this->request->data)) {
+				$users_users_status = $this->UsersUser->UsersUsersStatus->find('first', array('conditions' => array('UsersUsersStatus.name' => 'Por Aprobar')));
+				$this->request->data['UsersUser']['user_id'] = $this->request->data['user_id'];
+				$this->request->data['UsersUser']['friend_id'] = $this->request->data['friend_id'];
+				$this->request->data['UsersUser']['users_users_status_id'] = $users_users_status['UsersUsersStatus']['id'];
+				unset($this->request->data['user_id']);
+				unset($this->request->data['friend_id']);
+				$this->UsersUser->create();
+				if (!$this->UsersUser->save($this->request->data)) {
+					throw new Exception('');
+				}
+			}
 		}
 	}
 }

@@ -11,7 +11,7 @@
 							echo '</div>';
 							echo '<div class="col-xs-9 col-sm-9 col-md-9 result_user_info">';
 								echo $user['User']['name'] . ' ' . $user['User']['last_name'];
-								echo '<button type="button">Ask for friendship</button>';
+								echo '<button type="button" user_id="' . $user['User']['id'] . '">Ask for friendship</button>';
 							echo '</div>';
 						echo '</div>';
 					echo '</div>';
@@ -22,6 +22,7 @@
 </div>
 <script type="text/javascript">
 	$('.result_user button').click(function(){
+		var button = $(this);
 		var user_id = $(this).attr('user_id');
 		var friend_id = '<?php echo $user1['id'];?>';
 		$.ajax({
@@ -29,38 +30,11 @@
 			type:"POST",
 			data: 'user_id=' + user_id + '&friend_id=' + friend_id,
 			success: function(data) {
-				alert("exito");
-//			  var content_info = $(data).find('#content_info');
-//			  $('#content').html(content_info);
-//			  document.addEventListener("DOMContentLoaded", function() {
-//				var elements = document.getElementsByTagName("INPUT");
-//				for (var i = 0; i < elements.length; i++) {
-//					elements[i].oninvalid = function(e) {
-//						e.target.setCustomValidity("");
-//						if (!e.target.validity.valid) {
-//							e.target.setCustomValidity('<?php echo __('This field cannot be left blank or is invalid')?>');
-//						}
-//					};
-//					elements[i].oninput = function(e) {
-//						e.target.setCustomValidity("");
-//					};
-//				}
-//			});
-//			$('form').each(function(){
-//				var max_width = 0;
-//				$('#' + $(this).attr('id') + ' label').each(function(){
-//					if (max_width < $(this).width()) {
-//						max_width = $(this).width();
-//					}
-//				});
-//				if (max_width !== 0) {
-//					$('#' + $(this).attr('id') + ' label').each(function(){
-//						if (max_width !== $(this).width()) {
-//							$(this).css('margin-right', max_width - $(this).width());
-//						}
-//					});
-//				}
-//			});
+				button.attr('disabled','disabled');
+				button.html("<?php echo __('The petition was sent')?>");
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) { 
+				alert("<?php echo __('An error occurred in the petition')?>");
 			}
 		});
 	});
