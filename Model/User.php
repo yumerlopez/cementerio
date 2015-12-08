@@ -207,5 +207,12 @@ class User extends AppModel {
 		}
 		return true;
 	}
+	
+	public function afterFind($results, $primary = false) {
+		foreach ($results as $key => $val) {
+			$results[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $val['User']['url_image']);
+		}
+		return $results;
+	}
 
 }

@@ -6,21 +6,21 @@
  */
 ?>
 
-<div class="col-color col-post">
+<div class="col-color col-post default-layout-panel">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<iframe width="420" height="345" src="http://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
 		</div>
 	</div>
 </div>
-<div class="col-color col-post">
+<div class="col-color col-post default-layout-panel">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			#f0f5d8
 		</div>
 	</div>
 </div>
-<div class="col-color col-post">
+<div class="col-color col-post default-layout-panel">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			#f0f5d8

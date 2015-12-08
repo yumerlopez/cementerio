@@ -35,7 +35,7 @@ class PagesController extends AppController {
  *
  * @var array
  */
-	public $uses = array();
+	public $uses = array('Event', 'Multimedia', 'Post');
 	
 	private $__unAuthorizedActions = array();
 	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'login_register', 'logout');
@@ -93,5 +93,21 @@ class PagesController extends AppController {
 			}
 			throw new NotFoundException();
 		}
+	}
+	
+	public function home() {
+		$events = $this->Event->find('all');
+		$multimedia = $this->Multimedia->find('all');
+		$posts = $this->Post->find('all');
+		
+		$result = array();
+		
+		foreach ($events as $key => $event) {
+//			$result[$event['Event']['modified']]['Event']
+		}
+		
+		print_r($events);
+		print_r($multimedia);
+		print_r($posts);
 	}
 }

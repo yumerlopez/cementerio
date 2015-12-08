@@ -23,13 +23,28 @@
 		<?php echo $this->element('Layouts/head'); ?>
 	</head>
 	<body>
+		<?php $user = $this->Session->read('CurrentSessionUser');?>
 		<div class="container-fluid">
 			<?php echo $this->element('Layouts/header'); ?>
 		</div>
 		<div class="container-fluid">
 			<div class="row" style="margin-bottom: 20px; margin-top: 20px;">
-				<div class="col-xs-2 col-sm-2 col-md-2 col-color left">
-					Foto, perfil, grupos y listas
+				<div class="col-xs-2 col-sm-2 col-md-2 col-color left default-layout-panel">
+					<?php // print_r($user);?>
+					<div>
+						<a href="<?php echo $this->Html->url(array("controller" => "users", "action" => "user_profile", $user['id'])) ?>">
+							<?php echo $this->Html->image($user['url_image_thumb'], array('width' => '50px')); ?>
+						</a>
+						<a href="<?php echo $this->Html->url(array("controller" => "users", "action" => "user_profile", $user['id'])) ?>">
+							<?php echo $user['name'] . ' ' . $user['last_name']; ?>
+						</a>
+					</div>
+					<div>
+						Grupos
+					</div>
+					<div>
+						Listas
+					</div>
 				</div>
 				<!--<div class="col-md-1">.col-md-1</div>-->
 				<div class="col-xs-8 col-sm-8 col-md-8 col-center">
@@ -37,7 +52,7 @@
 					<?php echo $content_for_layout;?>
 				</div>
 				<!--<div class="col-md-1">.col-md-1</div>-->
-				<div class="col-xs-2 col-sm-2 col-md-2 col-color right">
+				<div class="col-xs-2 col-sm-2 col-md-2 col-color right default-layout-panel">
 					notificaciones, actividades de los amigos
 				</div>
 			</div>

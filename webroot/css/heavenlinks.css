@@ -44,6 +44,10 @@ and open the template in the editor.
 	text-align: right;
 }
 
+.default-layout-panel {
+	padding-top: 20px;
+}
+
 .corners {
 	border-radius: 25px;
 }
