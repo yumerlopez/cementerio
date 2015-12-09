@@ -19,7 +19,7 @@
 						echo $this->Html->image($multimedia['Multimedia']['url']);
 					}
 					if ($multimedia['MultimediaType']['name'] === 'Video') {
-						echo '<video controls src="' . $this->webroot . 'video' . DS . $multimedia['Multimedia']['url'] . '"/>';
+						echo '<video controls src="' . $this->webroot . 'video' . DS . $multimedia['Multimedia']['url'] . '"></video>';
 					}
 				?>
 			</div>

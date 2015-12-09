@@ -96,18 +96,35 @@ class PagesController extends AppController {
 	}
 	
 	public function home() {
-		$events = $this->Event->find('all');
-		$multimedia = $this->Multimedia->find('all');
-		$posts = $this->Post->find('all');
+		$events = $this->Event->find('all', array('order' => array('Event.id' => 'DESC')));
+		$multimedia = $this->Multimedia->find('all', array('order' => array('Multimedia.id' => 'DESC')));
+		$posts = $this->Post->find('all', array('order' => array('Post.id' => 'DESC')));
 		
-		$result = array();
+		$results = array();
 		
-		foreach ($events as $key => $event) {
-//			$result[$event['Event']['modified']]['Event']
+		foreach ($multimedia as $key => $multimedia_item) {
+			$results[$multimedia_item['Multimedia']['modified']][$key][$multimedia_item['MultimediaType']['name']]['name'] = $multimedia_item['Multimedia']['name'];
+			$results[$multimedia_item['Multimedia']['modified']][$key][$multimedia_item['MultimediaType']['name']]['description'] = $multimedia_item['Multimedia']['description'];
+			$results[$multimedia_item['Multimedia']['modified']][$key][$multimedia_item['MultimediaType']['name']]['url'] = $multimedia_item['Multimedia']['url'];
+			$results[$multimedia_item['Multimedia']['modified']][$key][$multimedia_item['MultimediaType']['name']]['MultimediaCollection']['name'] = $multimedia_item['MultimediaCollection']['name'];
 		}
 		
-		print_r($events);
-		print_r($multimedia);
-		print_r($posts);
+		foreach ($events as $key => $event) {
+			$results[$event['Event']['modified']][$key]['Event']['UserBelovedOne']['full_name'] = $event['UserBelovedOne']['full_name'];
+			$results[$event['Event']['modified']][$key]['Event']['name'] = $event['Event']['name'];
+			$results[$event['Event']['modified']][$key]['Event']['description'] = $event['Event']['description'];
+			$results[$event['Event']['modified']][$key]['Event']['start'] = $event['Event']['start'];
+			$results[$event['Event']['modified']][$key]['Event']['end'] = $event['Event']['modified'];
+		}
+		
+		foreach ($posts as $key => $post) {
+			$results[$post['Post']['modified']][$key]['Post']['post'] = $post['Post']['post'];
+		}
+		
+		krsort($results);
+		
+//		print_r($results);
+		
+		$this->set('results', $results);
 	}
 }

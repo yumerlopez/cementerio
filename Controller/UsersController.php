@@ -240,7 +240,7 @@ class UsersController extends AppController {
 				if ($record['UserStatus']['name'] === 'Activo') {
 					if ($this->Auth->login($record['User'])) {
 						$this->Session->write('CurrentSessionUser', $record['User']);
-						return $this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
+						return $this->redirect($this->Auth->loginRedirect);
 					}
 					$this->Session->setFlash(__('Invalid username or password'), 'default', array('class' => 'error_flash'));
 				} else {
