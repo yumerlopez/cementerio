@@ -9,11 +9,17 @@ and open the template in the editor.
 */
 
 .col-color {
-	background-color: #fffcf8
+	background: rgba(255,252,248, 0.7);
+	/*background-color: #fffcf8;*/
+	/*background-color: #F5F5F5;*/
+	/*background-color: #FFFAFA;*/
 }
 
 .col-container {
-	background-color: #fffcf8;
+	background: rgba(255,252,248, 0.7);
+	/*background-color: #fffcf8;*/
+	/*background-color: #F5F5F5;*/
+	/*background-color: #FFFAFA;*/
 }
 
 .col-center {
