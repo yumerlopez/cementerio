@@ -210,7 +210,9 @@ class User extends AppModel {
 	
 	public function afterFind($results, $primary = false) {
 		foreach ($results as $key => $val) {
-			$results[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $val['User']['url_image']);
+			if (isset($results[$key]['User'])) {
+				$results[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $val['User']['url_image']);
+			}
 		}
 		return $results;
 	}

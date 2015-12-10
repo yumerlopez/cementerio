@@ -334,7 +334,7 @@ class UsersController extends AppController {
 	
 	public function search () {
 		$users = array();
-		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
+//		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
 			$this->User->recursive = 1;
 			$this->User->Behaviors->load('Containable');
 			$current_user = $this->Session->read('CurrentSessionUser');
@@ -348,10 +348,9 @@ class UsersController extends AppController {
 			$this->Paginator->settings = $query;
 			$users = $this->Paginator->paginate();
 			foreach ($users as $key => $user) {
-				$users[$key]['User']['url_image_thumb'] = str_replace('profile.', 'thumbprofile.', $user['User']['url_image']);
 				$users[$key]['MyFriends'] = $this->__get_friendship_stauts($user, $current_user['id']);
 			}
-		}
+//		}
 		$this->set('users', $users);
 	}
 	
