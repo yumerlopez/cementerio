@@ -1,5 +1,5 @@
 <?php $user = $this->Session->read('CurrentSessionUser');?>
-<div class="col-color" id="content_info">
+<div id="content_info">
 	<?php echo $this->Html->script(array('tiny_mce/tinymce.min.js'));?>
 	<script type="text/javascript">
 		tinymce.init({

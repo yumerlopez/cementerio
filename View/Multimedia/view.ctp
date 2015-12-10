@@ -27,7 +27,7 @@
 				<?php echo h($multimedia['Multimedia']['name']) ?>
 			</h1>
 		</div>
-		<div class="col-color corners col-xs-5 col-sm-5 col-md-5 comments_box">
+		<div class="corners col-xs-5 col-sm-5 col-md-5 comments_box">
 			<div class="big_img_description">
 				<?php echo $multimedia['Multimedia']['description']; ?>
 			</div>

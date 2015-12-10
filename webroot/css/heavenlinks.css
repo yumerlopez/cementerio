@@ -85,6 +85,16 @@ and open the template in the editor.
 	border-radius: 25px;
 }
 
+.corners-left {
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+}
+
+.corners-right {
+	border-top-left-radius: 25px;
+	border-bottom-left-radius: 25px;
+}
+
 .login-register {
 	padding-bottom: 20px;
 	margin-bottom: 20px;
@@ -317,6 +327,7 @@ input[type="text"], input[type="email"] {
 
 .comments_box {
 	padding: 25px 15px;
+	background-color: #fffcf8;
 }
 
 .new_comment {

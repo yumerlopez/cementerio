@@ -29,7 +29,7 @@
 		</div>
 		<div class="container-fluid">
 			<div class="row" style="margin-bottom: 20px; margin-top: 20px;">
-				<div class="col-xs-2 col-sm-2 col-md-2 col-color left default-layout-panel">
+				<div class="col-xs-2 col-sm-2 col-md-2 col-color left corners-left default-layout-panel">
 					<?php // print_r($user);?>
 					<div>
 						<a href="<?php echo $this->Html->url(array("controller" => "users", "action" => "user_profile", $user['id'])) ?>">
@@ -52,7 +52,7 @@
 					<?php echo $content_for_layout;?>
 				</div>
 				<!--<div class="col-md-1">.col-md-1</div>-->
-				<div class="col-xs-2 col-sm-2 col-md-2 col-color right default-layout-panel">
+				<div class="col-xs-2 col-sm-2 col-md-2 col-color right corners-right default-layout-panel">
 					notificaciones, actividades de los amigos
 				</div>
 			</div>

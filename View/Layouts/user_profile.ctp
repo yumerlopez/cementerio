@@ -10,7 +10,7 @@
 		</div>
 		<div class="container-fluid">
 			<div class="row" style="margin-bottom: 20px; margin-top: 20px;">
-				<div class="col-xs-12 col-sm-12 col-md-1 col-color left">
+				<div class="col-xs-12 col-sm-12 col-md-1 col-color left corners-left">
 					<?php echo $this->element('Layouts/user_profile_sidebar_menu'); ?>
 				</div>
 				<!--<div class="col-md-1">.col-md-1</div>-->

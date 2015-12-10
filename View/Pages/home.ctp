@@ -5,7 +5,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  */
 ?>
-<div class="col-color col-post default-layout-panel">
+<div class="col-color col-post default-layout-panel corners">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<div class="post_header">
@@ -25,7 +25,7 @@
 	foreach ($results as $date => $result_array) {
 		foreach ($result_array as $key => $result) {
 			if (key($result) === 'Photo') {
-				echo '<div class="col-color col-post default-layout-panel">' . 
+				echo '<div class="col-color col-post default-layout-panel corners">' . 
 						'<div class="row col-row">' . 
 							'<div class="col-xs-12 col-sm-12 col-md-12">' .
 								'<div class="post_header">' . 
@@ -44,7 +44,7 @@
 				'</div>';
 		   }
 		   if (key($result) === 'Video') {
-			   echo '<div class="col-color col-post default-layout-panel">' . 
+			   echo '<div class="col-color col-post default-layout-panel corners">' . 
 						'<div class="row col-row">' . 
 							'<div class="col-xs-12 col-sm-12 col-md-12">' .
 								'<div class="post_header">' . 
@@ -63,7 +63,7 @@
 				'</div>';
 		   }
 		   if (key($result) === 'Event') {
-			   echo '<div class="col-color col-post default-layout-panel">' . 
+			   echo '<div class="col-color col-post default-layout-panel corners">' . 
 						'<div class="row col-row">' . 
 							'<div class="col-xs-12 col-sm-12 col-md-12">' .
 								'<div class="post_header">' . 

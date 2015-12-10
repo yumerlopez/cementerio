@@ -1,4 +1,4 @@
-<div class="col-color" id="content_info">
+<div id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-6 col-sm-6 col-md-6">
 			<div class="users form">

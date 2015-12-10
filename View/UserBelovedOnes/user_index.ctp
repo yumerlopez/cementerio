@@ -1,4 +1,4 @@
-	<div class="col-color" id="content_info">
+<div id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-9 col-sm-9 col-md-9">
 			<h1><?php echo __('Your Beloved Ones'); ?></h1>

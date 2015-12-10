@@ -1,5 +1,5 @@
 <?php $user = $this->Session->read('CurrentSessionUser');?>
-<div class="col-color" id="content_info">
+<div id="content_info">
 	<div class="row col-row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<h1><?php echo __('Edit Your Beloved One'); ?></h1>
