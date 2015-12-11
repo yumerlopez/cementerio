@@ -18,7 +18,7 @@ class UsersUsersController extends AppController {
 	public $components = array('Paginator', 'Flash', 'Session');
 	
 	private $__unAuthorizedActions = array();
-	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index');
 
 
 	public function isAuthorized($user) {
@@ -35,8 +35,8 @@ class UsersUsersController extends AppController {
 
 	function  beforeFilter() {
 		parent::beforeFilter();
-		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship');
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index');
 	}
 
 /**
@@ -149,6 +149,52 @@ class UsersUsersController extends AppController {
 					throw new Exception('');
 				}
 			}
+		}
+	}
+	
+	public function friendship_index($user_id = null) {
+		if (!$this->UsersUser->User->exists($user_id)) {
+			throw new NotFoundException(__('Invalid user'));
+		}
+		$this->UsersUser->recursive = 0;
+		
+		
+		$query = array('conditions' => array('UsersUser.user_id' => $user_id,
+											 'UsersUsersStatus.name' => 'Por Aprobar'));
+		$this->Paginator->settings = $query;
+		$usersUsers = $this->Paginator->paginate();
+		$this->set('usersUsersPending', $usersUsers);
+		
+		$query = array('conditions' => array('UsersUser.user_id' => $user_id,
+											 'UsersUsersStatus.name' => 'Aprobado'));
+		$this->Paginator->settings = $query;
+		$usersUsers = $this->Paginator->paginate();
+		$this->set('usersUsers', $usersUsers);
+		
+		$query = array('conditions' => array('UsersUser.user_id' => $user_id,
+											 'UsersUsersStatus.name' => 'Bloqueado'));
+		$this->Paginator->settings = $query;
+		$usersUsers = $this->Paginator->paginate();
+		$this->set('usersUsersBlocked', $usersUsers);
+	}
+	
+	public function approve_friendship_petition($id = null) {
+		$this->UsersUser->id = $id;
+		if (!$this->UsersUser->exists()) {
+			throw new NotFoundException(__('Invalid users user'));
+		}
+		if ($this->request->is(array('post'))) {
+			$users_user_status = $this->UsersUser->UsersUsersStatus->find('first', array('conditions' => array('UsersUsersStatus.name' => 'Aprobado')));
+			$this->__update_friendship_status($id, $users_user_status['UsersUsersStatus']['id']);
+		}
+		$current_user = $this->Session->read('CurrentSessionUser');
+		return $this->redirect(array('action' => 'user_profile', Router::url(array('controller' => 'user_beloved_ones', 'action' => 'user_index', $current_user['id']))));
+	}
+	
+	private function __update_friendship_status($id, $status_id) {
+		if ($this->UsersUser->save(array('id' => $id, 'users_users_status_id' => $status_id))) {
+		} else {
+			$this->Session->setFlash(__('The users user could not be update. Please, try again.'), 'default', array('class' => 'error_flash'));
 		}
 	}
 }

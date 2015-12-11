@@ -114,6 +114,8 @@ class EventsController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Event->save($this->request->data)) {
 				$this->Session->setFlash(__('The event has been saved.'), 'default', array('class' => 'success_flash'));
+//				$current_user = $this->Session->read('CurrentSessionUser');
+//				$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'user_beloved_one_index', $current_user['id'])));
 				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			} else {
 				$this->Session->setFlash(__('The event could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));

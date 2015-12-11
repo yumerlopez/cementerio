@@ -284,6 +284,13 @@ class UsersController extends AppController {
 	
 	public function user_profile() {
 		$this->layout='user_profile';
+		$action_to = $this->Session->read('action_to');
+		if ($action_to !== null && isset($action_to) && $action_to !== '') {
+			$this->set('action_to', $action_to);
+			$this->Session->delete('action_to');
+		} else {
+			$this->set('action_to', '');
+		}
 	}
 	
 	public function set_edit_user_picture($id = null) {
@@ -314,6 +321,9 @@ class UsersController extends AppController {
 					file_put_contents($filename_path . 'thumbprofile.' . $imagen_extention_tumbr[1], base64_decode($data_image_thumb));
 					chmod($filename_path . 'thumbprofile.' . $imagen_extention_tumbr[1], 0777);
 					$this->Session->setFlash(__('The user has been saved.'), 'default', array('class' => 'success_flash corners'));
+					
+					$current_user = $this->Session->read('CurrentSessionUser');
+					$this->Session->write('action_to', Router::url(array('controller'=>'users', 'action'=>'set_edit_user_picture', $current_user['id'])));
 					return $this->redirect(array('action' => 'user_profile'));
 				} else {
 					$dataSource->rollback();

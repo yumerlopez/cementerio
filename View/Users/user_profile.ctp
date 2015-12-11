@@ -5,9 +5,16 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">	
+<script type="text/javascript">
+	var action_to = '<?php
+						if ($action_to !== null && isset($action_to) && $action_to !== '') {
+							echo $action_to;
+						} else {
+							echo $this->Html->url(array('controller' => 'users', 'action' => 'edit', $user['id']));
+						}
+					?>';
 	$.ajax({
-        url:'<?php echo $this->Html->url(array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>',
+        url:action_to,
         type:"GET",
         success: function(data) {
 			$('#content').html($(data).find('#content_info'));
