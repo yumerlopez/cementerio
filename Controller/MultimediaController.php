@@ -35,6 +35,12 @@ class MultimediaController extends AppController {
 		parent::beforeFilter();
 		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'add_multimedia');
 		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'add_multimedia');
+		
+		$request_on_error = $this->Session->read('request_on_error');
+		if ($request_on_error !== null && isset($request_on_error) && $request_on_error !== '') {
+			$this->request->data = $request_on_error;
+			$this->Session->delete('request_on_error');
+		}
 	}
 
 /**
@@ -102,19 +108,29 @@ class MultimediaController extends AppController {
 					if (move_uploaded_file($this->request->data['Multimedia']['multimedia_file']['tmp_name'], WWW_ROOT . $folder . $this->request->data['Multimedia']['url']) && 
 						chmod(WWW_ROOT . $folder . $this->request->data['Multimedia']['url'], 0777)) {
 						$dataSource->commit();
-						$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
-						return $this->redirect(array('action' => 'index'));			
+						$this->Flash->success(__('The multimedia has been saved.'));
+						$this->Session->write('action_to', Router::url(array('controller'=>'multimedia_collections', 'action'=>'view', $multimedia_type, $this->request->data['Multimedia']['multimedia_collection_id'])));
+						return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 					} else {
 						$dataSource->rollback();
-						$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+						$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+						$this->Session->write('request_on_error', $this->request->data);
+						$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add', $multimedia_type, $user_beloved_one_id)));
+						return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 					}
 				} else {
 					$dataSource->rollback();
-					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+					$this->Session->write('request_on_error', $this->request->data);
+					$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add', $multimedia_type, $user_beloved_one_id)));
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 				}
 			} catch (Exception $exc) {
 				$dataSource->rollback();
-				$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+				$this->Session->write('request_on_error', $this->request->data);$this->Session->write('request_on_error', $this->request->data);
+				$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add', $multimedia_type, $user_beloved_one_id)));
+				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			}
 		}
 		$this->set('multimedia_type', $multimedia_type);
@@ -137,16 +153,14 @@ class MultimediaController extends AppController {
 		$this->set(compact('multimediaType', 'multimediaCollection', 'userBelovedOne'));
 	}
 	
-	public function add_multimedia($multimedia_type, $multimedia_collection_id = null) {
+	public function add_multimedia($multimedia_type, $multimedia_collection_id = null) {		
 		if ($this->request->is('post')) {
-//			print_r($this->request->data);
 			$dataSource = $this->Multimedia->getDataSource();
 			$dataSource->begin();
 			try {
 				foreach ($this->request->data['Multimedia'] as $key => $multimedia_item) {
 					$this->request->data['Multimedia'][$key]['url'] = $this->__get_multimedia_path($multimedia_item['multimedia_file'], $multimedia_type);
 				}
-//				print_r($this->request->data);
 				$this->Multimedia->create();
 				if ($this->Multimedia->saveMany($this->request->data['Multimedia'])) {
 					if ($multimedia_type === 'photo') {
@@ -166,19 +180,30 @@ class MultimediaController extends AppController {
 					}
 					if ($bool) {
 						$dataSource->commit();
-						$this->Session->setFlash(__('The multimedia has been saved.'), 'default', array('class' => 'success_flash'));
-						return $this->redirect(array('action' => 'index'));
+						$this->Flash->success(__('The multimedia has been saved.'));
+						
+						$this->Session->write('action_to', Router::url(array('controller'=>'multimedia_collections', 'action'=>'view', $multimedia_type, $multimedia_collection_id)));
+						return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 					} else {
 						$dataSource->rollback();
-						$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+						$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+						$this->Session->write('request_on_error', $this->request->data);
+						$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add_multimedia', $multimedia_type, $multimedia_collection_id)));
+						return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 					}
 				} else {
 					$dataSource->rollback();
-					$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+					$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add_multimedia', $multimedia_type, $multimedia_collection_id)));
+					$this->Session->write('request_on_error', $this->request->data);
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 				}
 			} catch (Exception $exc) {
 				$dataSource->rollback();
-				$this->Session->setFlash(__('The multimedia could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				$this->Flash->error(__('The multimedia could not be saved. Please, try again.'));
+				$this->Session->write('request_on_error', $this->request->data);
+				$this->Session->write('action_to', Router::url(array('controller'=>'multimedia', 'action'=>'add_multimedia', $multimedia_type, $multimedia_collection_id)));
+				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			}
 		}
 		$this->set('multimedia_type', $multimedia_type);
@@ -192,7 +217,6 @@ class MultimediaController extends AppController {
 			$multimedia_collection_type = 'Video Collection';
 			$multimedia_collection = 'General Video Collection';
 		}
-//		$userBelovedOne = $this->Multimedia->MultimediaCollection->UserBelovedOne->find('first', array('conditions' => array('UserBelovedOne.id' => $user_beloved_one_id)));
 		$multimediaType = $this->Multimedia->MultimediaType->find('first', array('conditions' => array('MultimediaType.name' => $multimedia_type)));
 		$multimediaCollection = $this->Multimedia->MultimediaCollection->find('first', array('recursive' => 1,
 																							 'conditions' => array('MultimediaCollection.id' => $multimedia_collection_id)));

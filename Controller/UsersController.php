@@ -84,7 +84,7 @@ class UsersController extends AppController {
 						$this->UserPhone->create();
 						if ($this->UserPhone->saveMany($this->request->data['UserPhone'])) {
 							$dataSource->commit();
-							$this->Session->setFlash(__('The user has been saved.'), 'default', array('class' => 'success_flash'));
+							$this->Flash->success(__('The user has been saved.'));
 							mkdir(WWW_ROOT . DS . 'img'  . DS . 'users' . DS . $this->User->id . DS . 'photos', 0777, true);
 							mkdir(WWW_ROOT . DS . 'img'  . DS . 'users' . DS . $this->User->id . DS . 'profile', 0777, true);
 							mkdir(WWW_ROOT . DS . 'video'  . DS . 'users' . DS . $this->User->id, 0777, true);
@@ -96,19 +96,19 @@ class UsersController extends AppController {
 							}
 						} else {
 							$dataSource->rollback();
-							$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+							$this->Flash->error(__('The user could not be saved. Please, try again.'));
 						}
 					} else {
 						$dataSource->rollback();
-						$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+						$this->Flash->error(__('The user could not be saved. Please, try again.'));
 					}
 				} else {
 					$dataSource->rollback();
-					$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('The user could not be saved. Please, try again.'));
 				}
 			} catch (Exception $ex) {
 				$dataSource->rollback();
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+				$this->Flash->error(__('The user could not be saved. Please, try again.'));
 			}
 		}
 		if ($this->Session->read('referer') == Router::url(array('controller' => 'users', 'action' => 'login_register'), true)) {
@@ -145,23 +145,22 @@ class UsersController extends AppController {
 			$dataSource = $this->User->getDataSource();
 			$dataSource->begin();
 			try {
-//				print_r($this->request->data);
 				if ($this->User->save($this->request->data)) {
 					$this->__updateUserPhone($this->request->data['User']['id'], (isset($this->request->data['UserPhone']) ? $this->request->data['UserPhone'] : array()), 'UserPhone');
 					$this->__updateUserPhone($this->request->data['User']['id'], (isset($this->request->data['Email']) ? $this->request->data['Email'] : array()), 'Email');
 					$this->__updateUserPhone($this->request->data['User']['id'], (isset($this->request->data['SocialNetwork']) ? $this->request->data['SocialNetwork'] : array()), 'SocialNetwork');
 					$dataSource->commit();
-					$this->Session->setFlash(__('The user has been saved.'), 'default', array('class' => 'success_flash'));
+					$this->Flash->success(__('The user has been saved.'));
 					return $this->redirect(array('action' => 'user_profile'));
 				} else {
 					$dataSource->rollback();
-					$this->Session->setFlash(__('The user could not be saved. Please, try again.1'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('The user could not be saved. Please, try again.1'));
 				}
 				
 			} catch (Exception $ex) {
 				$dataSource->rollback();
 //				$this->Session->setFlash($ex->getTraceAsString(), 'default', array('class' => 'error_flash'));
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.2'), 'default', array('class' => 'error_flash'));
+				$this->Flash->error(__('The user could not be saved. Please, try again.2'));
 			}
 		} else {
 			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
@@ -203,31 +202,9 @@ class UsersController extends AppController {
 	}
 	
 	private function __register($request) {
-//		$this->view = 'login_register';
-//		$dataSource = $this->User->getDataSource();
-//		$dataSource->begin();
-		try {
-			$this->Session->write('request', $request);
-			$this->Session->write('referer', Router::url(array('controller' => 'users', 'action' => 'login_register'), true));
-			$this->redirect(array('action' => 'add'));
-//			$this->User->create();
-//			$request->data['User']['activation_code'] = $this->_generateRandomString();
-//			$user_status = $this->User->UserStatus->find('first', array('conditions' => array('UserStatus.name' => 'Inactivo')));
-//			$request->data['User']['user_status_id'] = $user_status['UserStatus']['id'];
-//			if ($this->User->save($request->data)) {
-//				$request->data['User']['id'] = $this->User->id;
-//				$this->_sendEmail('lopezyumer@gmail.com', __('New User Register'), 'register');
-//				$this->_sendEmail($request->data['User']['username'], __('New User Register'), 'register');
-//				$this->Session->setFlash(__('The user was register. Please, check your email inbox!'), 'default', array('class' => 'success_flash'));
-//				$dataSource->commit();
-//			} else {
-//				$this->Session->setFlash(__('The user could not be saved. Please, check the errors and try again.'), 'default', array('class' => 'error_flash'));
-//				$dataSource->rollback();
-//			}
-		} catch (Exception $ex) {
-//			$this->Session->setFlash(__('The user could not be saved. Please, check the errors and try again.'), 'default', array('class' => 'error_flash'));
-//			$dataSource->rollback();
-		}
+		$this->Session->write('request', $request);
+		$this->Session->write('referer', Router::url(array('controller' => 'users', 'action' => 'login_register'), true));
+		$this->redirect(array('action' => 'add'));
 	}
 	
 	private function __login($request) {
@@ -242,15 +219,15 @@ class UsersController extends AppController {
 						$this->Session->write('CurrentSessionUser', $record['User']);
 						return $this->redirect($this->Auth->loginRedirect);
 					}
-					$this->Session->setFlash(__('Invalid username or password'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('Invalid username or password'));
 				} else {
-					$this->Session->setFlash(__('User inactivated or blocked'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('User inactivated or blocked'));
 				}
 			} else {
-				$this->Session->setFlash(__('Unable to login'), 'default', array('class' => 'error_flash'));
+				$this->Flash->error(__('Unable to login'));
 			}
 		} catch (Exception $ex) {
-			$this->Session->setFlash(__('Unable to login'), 'default', array('class' => 'error_flash'));
+			$this->Flash->error(__('Unable to login'));
 		}
 	}
 	
@@ -320,20 +297,19 @@ class UsersController extends AppController {
 					chmod($filename_path . 'profile.' . $imagen_extention_original[1], 0777);
 					file_put_contents($filename_path . 'thumbprofile.' . $imagen_extention_tumbr[1], base64_decode($data_image_thumb));
 					chmod($filename_path . 'thumbprofile.' . $imagen_extention_tumbr[1], 0777);
-					$this->Session->setFlash(__('The user has been saved.'), 'default', array('class' => 'success_flash corners'));
+					$this->Flash->success(__('The user has been saved.'));
 					
 					$current_user = $this->Session->read('CurrentSessionUser');
 					$this->Session->write('action_to', Router::url(array('controller'=>'users', 'action'=>'set_edit_user_picture', $current_user['id'])));
 					return $this->redirect(array('action' => 'user_profile'));
 				} else {
 					$dataSource->rollback();
-					$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
+					$this->Flash->error(__('The user could not be saved. Please, try again.'));
 				}
 				
 			} catch (Exception $exc) {
 				$dataSource->rollback();
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
-//				echo $exc->getTraceAsString();
+				$this->Flash->error(__('The user could not be saved. Please, try again.'));
 			}
 
 		} else {
@@ -344,7 +320,7 @@ class UsersController extends AppController {
 	
 	public function search () {
 		$users = array();
-//		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
+		if (isset($this->request->data['User']['search']) && !empty($this->request->data['User']['search'])) {
 			$this->User->recursive = 1;
 			$this->User->Behaviors->load('Containable');
 			$current_user = $this->Session->read('CurrentSessionUser');
@@ -360,7 +336,7 @@ class UsersController extends AppController {
 			foreach ($users as $key => $user) {
 				$users[$key]['MyFriends'] = $this->__get_friendship_stauts($user, $current_user['id']);
 			}
-//		}
+		}
 		$this->set('users', $users);
 	}
 	
@@ -379,7 +355,6 @@ class UsersController extends AppController {
 				break;
 			}
 		}
-//		print_r($user['MyFriends']);
 		return $user['MyFriends'];
 	}
 }

@@ -35,6 +35,12 @@ class EventsController extends AppController {
 		parent::beforeFilter();
 		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'user_beloved_one_index');
 		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'user_beloved_one_index');
+		
+		$request_on_error = $this->Session->read('request_on_error');
+		if ($request_on_error !== null && isset($request_on_error) && $request_on_error !== '') {
+			$this->request->data = $request_on_error;
+			$this->Session->delete('request_on_error');
+		}
 	}
 
 /**
@@ -84,13 +90,28 @@ class EventsController extends AppController {
 			throw new NotFoundException(__('Invalid user beloved one'));
 		}
 		if ($this->request->is('post')) {
-//			print_r($this->request->data);
-			$this->Event->create();
-			if ($this->Event->save($this->request->data)) {
-				$this->Session->setFlash(__('The event has been saved.'), 'default', array('class' => 'success_flash'));
+			$dataSource = $this->Event->getDataSource();
+			$dataSource->begin();
+			try {
+				$this->Event->create();
+				if ($this->Event->save($this->request->data)) {
+					$dataSource->commit();
+					$this->Flash->success(__('The event has been saved.'));
+					$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'user_beloved_one_index', $this->request->data['Event']['user_beloved_one_id'])));
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+				} else {
+					$dataSource->rollback();
+					$this->Flash->error(__('The event could not be saved. Please, try again.'));
+					$this->Session->write('request_on_error', $this->request->data);
+					$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'add', $user_beloved_one_id)));
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+				}
+			} catch (Exception $ex) {
+				$dataSource->rollback();
+				$this->Flash->error(__('The event could not be saved. Please, try again.'));
+				$this->Session->write('request_on_error', $this->request->data);
+				$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'add', $user_beloved_one_id)));
 				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
-			} else {
-				$this->Session->setFlash(__('The event could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		}
 		$userBelovedOne = $this->Event->UserBelovedOne->find('first', array('recursive' => 0,
@@ -112,25 +133,40 @@ class EventsController extends AppController {
 			throw new NotFoundException(__('Invalid event'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Event->save($this->request->data)) {
-				$this->Session->setFlash(__('The event has been saved.'), 'default', array('class' => 'success_flash'));
-//				$current_user = $this->Session->read('CurrentSessionUser');
-//				$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'user_beloved_one_index', $current_user['id'])));
+			$dataSource = $this->Event->getDataSource();
+			$dataSource->begin();
+			try {
+				if ($this->Event->save($this->request->data)) {
+					$dataSource->commit();
+					$this->Flash->success(__('The event has been saved.'));
+					$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'user_beloved_one_index', $this->request->data['Event']['user_beloved_one_id'])));
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+				} else {
+					$dataSource->rollback();
+					$this->Flash->error(__('The event could not be saved. Please, try again.'));
+					$this->Session->write('request_on_error', $this->request->data);
+					$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'edit', $id)));
+					return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+				}
+			} catch (Exception $ex) {
+				$dataSource->rollback();
+				$this->Flash->error(__('The event could not be saved. Please, try again.'));
+				$this->Session->write('request_on_error', $this->request->data);
+				$this->Session->write('action_to', Router::url(array('controller'=>'events', 'action'=>'edit', $id)));
 				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
-			} else {
-				$this->Session->setFlash(__('The event could not be saved. Please, try again.'), 'default', array('class' => 'error_flash'));
 			}
 		} else {
-			$options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
-			$this->request->data = $this->Event->find('first', $options);
+			if (empty($this->request->data)) {
+				$options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
+				$this->request->data = $this->Event->find('first', $options);
+			}
 		}
-		$userBelovedOnesArray = $this->Event->UserBelovedOne->find('all', array('recursive' => 0,
-																			'fields' => array('UserBelovedOne.id', 'UserBelovedOne.full_name', 'UserBelovedOneRelationship.name')));
-		$userBelovedOnes = array();
-		foreach ($userBelovedOnesArray as $key => $userBelovedOne) {
-			$userBelovedOnes[$userBelovedOne['UserBelovedOne']['id']] = $userBelovedOne['UserBelovedOneRelationship']['name'] . ': ' . $userBelovedOne['UserBelovedOne']['full_name'];
-		}
-		$this->set(compact('userBelovedOnes'));
+		
+		$userBelovedOne = $this->Event->UserBelovedOne->find('first', array('recursive' => 0,
+																			'fields' => array('UserBelovedOne.id', 'UserBelovedOne.full_name', 'UserBelovedOneRelationship.name'),
+																			'conditions' => array('UserBelovedOne.id' => $this->request->data['Event']['user_beloved_one_id'])));
+		
+		$this->set(compact('userBelovedOne'));
 	}
 
 /**

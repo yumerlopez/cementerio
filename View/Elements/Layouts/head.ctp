@@ -5,7 +5,7 @@
 </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php
-	echo $this->Html->meta('icon');
+	echo $this->Html->meta('icon', 'favicon.ico');
 	echo $this->fetch('meta');
 	echo $this->fetch('css');
 	echo $this->fetch('script');

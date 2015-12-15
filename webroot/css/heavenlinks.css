@@ -195,6 +195,8 @@ input[type="text"], input[type="email"] {
 }
 
 .error_flash {
+	margin-bottom: 10px;
+    border-radius: 25px;
 	margin-top: 3px;
 	color: #D8000C;
 	background-color: #FFBABA;
@@ -207,6 +209,8 @@ input[type="text"], input[type="email"] {
 }
 
 .success_flash {
+	margin-bottom: 10px;
+    border-radius: 25px;
 	margin-top: 3px;
 	color: #4F8A10;
 	background-color: #DFF2BF;
@@ -345,6 +349,10 @@ input[type="text"], input[type="email"] {
 	margin-top: 6px;
 	padding: 4px 10px;
 	border-radius: 25px;
+}
+
+#UserSearchForm {
+	float: right;
 }
 
 #UserSearchForm .input {

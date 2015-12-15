@@ -20,10 +20,8 @@
 			<?php echo $this->Form->create('Event'); ?>
 				<?php echo $this->Form->input('id'); ?>
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6">
-						<?php echo $this->Form->input('user_beloved_one_id', array('label' => __('Beloved One*: '), 'required' => false)); ?>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6">
+					<?php echo $this->Form->hidden('user_beloved_one_id', array('value' => $userBelovedOne['UserBelovedOne']['id'])); ?>
+					<div class="col-xs-12 col-sm-12 col-md-12">
 						<?php echo $this->Form->input('name', array('label' => __('Name*: '), 'required' => false)); ?>
 					</div>
 				</div>

@@ -54,9 +54,11 @@ class AppController extends Controller {
                 )
             ),
 			'authorize' => array('Controller')
-        )
+        ),
+		'Flash'
     );
-	
+
+
 	public function beforeRender() {
 		parent::beforeRender(); 
 		$this->Auth->unauthorizedRedirect = array(array('controller' => 'pages', 'action' => 'display', 'home'));

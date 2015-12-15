@@ -35,6 +35,12 @@ class MultimediaCollectionsController extends AppController {
 		parent::beforeFilter();
 		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'user_beloved_one_index');
 		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'user_beloved_one_index');
+		
+		$request_on_error = $this->Session->read('request_on_error');
+		if ($request_on_error !== null && isset($request_on_error) && $request_on_error !== '') {
+			$this->request->data = $request_on_error;
+			$this->Session->delete('request_on_error');
+		}
 	}
 	
 
@@ -104,9 +110,13 @@ class MultimediaCollectionsController extends AppController {
 			$this->MultimediaCollection->create();
 			if ($this->MultimediaCollection->save($this->request->data)) {
 				$this->Flash->success(__('The multimedia collection has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Session->write('action_to', Router::url(array('controller'=>'multimedia_collections', 'action'=>'user_beloved_one_index', $multimedia_collection_type, $user_beloved_one_id)));
+				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			} else {
 				$this->Flash->error(__('The multimedia collection could not be saved. Please, try again.'));
+				$this->Session->write('request_on_error', $this->request->data);
+				$this->Session->write('action_to', Router::url(array('controller'=>'multimedia_collections', 'action'=>'add', $multimedia_collection_type, $user_beloved_one_id)));
+				return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
 			}
 		}
 //		$multimediaCollectionTypes = $this->MultimediaCollection->MultimediaCollectionType->find('list');
