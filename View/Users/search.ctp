@@ -11,7 +11,15 @@
 							echo '</div>';
 							echo '<div class="col-xs-9 col-sm-9 col-md-9 result_user_info">';
 								echo $user['User']['name'] . ' ' . $user['User']['last_name'];
-								echo '<button type="button" user_id="' . $user['User']['id'] . '" ' . (isset($user['MyFriends']) && !empty($user['MyFriends']) && $user['MyFriends']['UsersUsersStatus']['name'] === 'Por Aprobar' ? 'disabled' : '') . '>' . (isset($user['MyFriends']) && !empty($user['MyFriends']) && $user['MyFriends']['UsersUsersStatus']['name'] === 'Por Aprobar' ? 'The petition was sent' : 'Ask for friendship') . '</button>';
+								if (isset($user['MyFriends']) && !empty($user['MyFriends'])) {
+									if ($user['MyFriends']['UsersUsersStatus']['name'] === 'Por Aprobar') {
+										echo '<button type="button" user_id="' . $user['User']['id'] . '" disabled>The petition was sent</button>';
+									} else {
+										echo '<button type="button" user_id="' . $user['User']['id'] . '" disabled>You are friends</button>';
+									}
+								} else {
+									echo '<button type="button" user_id="' . $user['User']['id'] . '">Ask for friendship</button>';
+								}
 							echo '</div>';
 						echo '</div>';
 					echo '</div>';
