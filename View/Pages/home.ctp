@@ -11,11 +11,11 @@
 			<div class="post_header">
 				<h4><?php echo __('Make a new post'); ?></h4>
 			</div>
-			<?php echo $this->Form->create('MultimediaComment', array('controller' => 'multimedia_comments', 'action' => 'rrr')); ?>
+			<?php echo $this->Form->create('Post', array('controller' => 'posts', 'action' => 'add')); ?>
 				<?php
 //					echo $this->Form->hidden('multimedia_id', array('value' => $multimedia['Multimedia']['id']));
 //					echo $this->Form->hidden('user_id', array('value' => $user['id']));
-					echo $this->Form->input('comment', array('label' => false, 'style' => 'width: 100%; resize: none;'));
+					echo $this->Form->input('post', array('label' => false, 'style' => 'width: 100%; resize: none;'));
 				?>
 			<?php echo $this->Form->end(__('Submit')); ?>
 		</div>
@@ -85,8 +85,13 @@
 			   echo '<div class="col-color col-post default-layout-panel">' . 
 						'<div class="row col-row">' . 
 							'<div class="col-xs-12 col-sm-12 col-md-12">' .
-								'Nuevo post: ' . $date . 
+								'<div class="post_header">' . 
+									'<span>' . $date . '<span>' .
+								'</div>' . 
 							'</div>' .
+							'<div class="post_body">' . 
+								$result['Post']['post'] . 
+							'</div>' . 
 						'</div>' . 
 				'</div>';
 		   }

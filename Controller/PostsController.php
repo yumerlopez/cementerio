@@ -14,6 +14,28 @@ class PostsController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
+	
+	private $__unAuthorizedActions = array();
+	private $__adminActions = array('index', 'delete', 'add', 'edit', 'view');
+
+
+	public function isAuthorized($user) {
+		if (in_array($this->request->params['action'], $this->__unAuthorizedActions)) {
+			return false;
+		}
+		
+		if (in_array($this->request->params['action'], $this->__adminActions) && !parent::isAuthorized($user)) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	function  beforeFilter() {
+		parent::beforeFilter();
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view');
+	}
 
 /**
  * index method
@@ -46,17 +68,29 @@ class PostsController extends AppController {
  * @return void
  */
 	public function add() {
-		if ($this->request->is('post')) {
-			$this->Post->create();
-			if ($this->Post->save($this->request->data)) {
-				$this->Flash->success(__('The post has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The post could not be saved. Please, try again.'));
+		$dataSource = $this->Post->getDataSource();
+		$dataSource->begin();
+		$current_user = $this->Session->read('CurrentSessionUser');
+		try {
+			if ($this->request->is('post')) {
+				$this->request->data['Post']['user_id'] = $current_user['id'];
+				$this->Post->create();
+				if ($this->Post->save($this->request->data)) {
+					$dataSource->commit();
+					$this->Flash->success(__('The post has been saved.'));
+				} else {
+					$dataSource->rollback();
+					$this->Flash->error(__('The post could not be saved. Please, try again.'));
+				}
+				return $this->redirect('/');
 			}
+			$users = $this->Post->User->find('list');
+			$this->set(compact('users'));
+		} catch (Exception $ex) {
+			$dataSource->rollback();
+			$this->Flash->error(__('The post could not be saved. Please, try again.'));
+			return $this->redirect('/');
 		}
-		$users = $this->Post->User->find('list');
-		$this->set(compact('users'));
 	}
 
 /**

@@ -96,6 +96,7 @@
 									<?php echo $this->Html->link(__('View'), array('action' => 'view', $usersUser['UsersUser']['id'])); ?>
 									<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $usersUser['UsersUser']['id'])); ?>
 									<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $usersUser['UsersUser']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $usersUser['UsersUser']['id']))); ?>
+									<?php echo $this->Form->postLink(__('Unblock'), array('action' => 'unblock_friendship', $usersUser['UsersUser']['id']), array('confirm' => __('Are you sure you want to unblock %s?', $usersUser['Friend']['name'] . ' ' . $usersUser['Friend']['last_name']))); ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>

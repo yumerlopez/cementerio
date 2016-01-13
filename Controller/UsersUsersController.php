@@ -35,8 +35,8 @@ class UsersUsersController extends AppController {
 
 	function  beforeFilter() {
 		parent::beforeFilter();
-		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index');
+		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index', 'approve_friendship_petition', 'block_friendship', 'unblock_friendship');
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view', 'ask_for_friendship', 'friendship_index', 'approve_friendship_petition', 'block_friendship', 'unblock_friendship');
 	}
 
 /**
@@ -217,6 +217,20 @@ class UsersUsersController extends AppController {
 		$current_user = $this->Session->read('CurrentSessionUser');
 		if ($this->request->is(array('post'))) {
 			$users_user_status = $this->UsersUser->UsersUsersStatus->find('first', array('conditions' => array('UsersUsersStatus.name' => 'Bloqueado')));
+			$this->__update_friendship_status($id, $users_user_status['UsersUsersStatus']['id']);
+			$this->Session->write('action_to', Router::url(array('controller'=>'users_users', 'action'=>'friendship_index', $current_user['id'])));
+			return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));
+		}
+	}
+	
+	public function unblock_friendship($id = null) {
+		$this->UsersUser->id = $id;
+		if (!$this->UsersUser->exists()) {
+			throw new NotFoundException(__('Invalid users user'));
+		}
+		$current_user = $this->Session->read('CurrentSessionUser');
+		if ($this->request->is(array('post'))) {
+			$users_user_status = $this->UsersUser->UsersUsersStatus->find('first', array('conditions' => array('UsersUsersStatus.name' => 'Aprobado')));
 			$this->__update_friendship_status($id, $users_user_status['UsersUsersStatus']['id']);
 			$this->Session->write('action_to', Router::url(array('controller'=>'users_users', 'action'=>'friendship_index', $current_user['id'])));
 			return $this->redirect(array('controller' => 'users', 'action' => 'user_profile'));

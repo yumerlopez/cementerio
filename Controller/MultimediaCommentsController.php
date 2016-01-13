@@ -34,7 +34,7 @@ class MultimediaCommentsController extends AppController {
 	function  beforeFilter() {
 		parent::beforeFilter();
 		$this->Security->unlockedActions = array('index', 'delete', 'add', 'edit', 'view');
-		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view'	);
+		$this->Auth->allowedActions = array('index', 'delete', 'add', 'edit', 'view');
 	}
 
 /**
